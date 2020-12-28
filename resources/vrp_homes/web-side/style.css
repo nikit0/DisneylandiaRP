@@ -1,0 +1,333 @@
+@font-face {
+  font-family: disneylandia;
+  src: url(GothamPro-Black.woff);
+}
+
+body,
+td,
+th {
+  font-size: 12px;
+  font-family: disneylandia;
+  color: #a9a9a9;
+  cursor: default;
+  vertical-align: baseline;
+  outline: 0;
+  line-height: 1;
+  margin: 0;
+  padding: 0;
+  word-wrap: break-word;
+}
+a,
+a:link,
+a:visited,
+a:active,
+a:hover {
+  font-family: arial;
+  font-size: 12px;
+  color: #a9a9a9;
+  text-decoration: none;
+}
+div,
+span,
+applet,
+object,
+iframe,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+font,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr {
+  border: 0;
+  outline: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent;
+  margin: 0;
+  padding: 0;
+}
+:focus {
+  outline: 0;
+}
+img {
+  border: none;
+}
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.6);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(50, 50, 50, 0.6);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(50, 50, 50, 1);
+}
+::selection {
+  background: transparent;
+}
+::-moz-selection {
+  background: transparent;
+}
+
+#actionmenu {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  overflow: auto;
+  position: fixed;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+#inventory {
+  background-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 0.3)
+  );
+  top: 50%;
+  left: 50%;
+  width: 1490px;
+  overflow: auto;
+  position: fixed;
+  transform: translate(-50%, -50%);
+  padding: 50px;
+  border-radius: 0 0 10px 10px;
+}
+
+.esquerda {
+  width: 640px;
+  min-width: 640px;
+  min-height: 120px;
+  max-height: 507px;
+  float: left;
+  overflow-y: auto;
+}
+
+.meio {
+  width: 160px;
+  min-width: 160px;
+  min-height: 120px;
+  float: left;
+  margin: 0 25px;
+}
+
+.direita {
+  width: 640px;
+  min-width: 640px;
+  min-height: 120px;
+  max-height: 507px;
+  float: left;
+  overflow-y: auto;
+}
+
+.texto {
+  position: absolute;
+  margin-top: 8px;
+  left: 13rem;
+}
+
+.texto2 {
+  position: absolute;
+  margin-top: 8px;
+  left: 7rem;
+}
+
+.peso {
+  position: absolute;
+  margin: 5px;
+  color: rgba(255, 255, 255);
+
+  background: rgba(0, 0, 0, 0.6);
+  text-align: center;
+  width: 50.8rem;
+  height: 1.8rem;
+  left: 3rem;
+  top: 1rem;
+}
+
+.peso2 {
+  position: absolute;
+  margin: -22px 0 0 860px;
+  color: rgba(255, 255, 255, 0.5);
+
+  background: rgba(0, 0, 0, 0.6);
+  text-align: center;
+  width: 39.8rem;
+  height: 1.8rem;
+  left: 2.7rem;
+  top: 2.7rem;
+}
+
+.peso b,
+.peso2 b {
+  text-decoration: none;
+  color: rgba(255, 255, 255, 1);
+}
+
+.peso s,
+.peso2 s {
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.1);
+}
+
+.item,
+.item2 {
+  width: 118px;
+  height: 118px;
+  float: left;
+  margin: 3px;
+  position: relative;
+  color: rgba(255, 255, 255, 0.2);
+  text-shadow: 1px 1px #000;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.item s,
+.item2 s {
+  font-size: 9px;
+  text-decoration: none;
+  position: absolute;
+  margin: -55px 0 0 15px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.item:hover,
+.item2:hover {
+  background: rgba(190, 5, 135, 0.7);
+}
+
+.item.active,
+.item2.active {
+  background: rgba(235, 13, 161, 0.6);
+  animation: shadow-pulse 1s infinite;
+}
+
+@keyframes shadow-pulse {
+  0% {
+    box-shadow: 0 0 0 0px rgba(255, 255, 255, 0.5);
+  }
+  100% {
+    box-shadow: 0 0 0 10px rgba(25, 255, 255, 0);
+  }
+}
+
+#image {
+  position: absolute;
+}
+
+#peso {
+  width: 35px;
+  color: #fff;
+  text-align: left;
+  position: relative;
+  text-shadow: 1px 1px #000;
+  font-size: 9px;
+  float: left;
+  margin: 16px 0 5px 13px;
+}
+
+#quantity {
+  width: 49px;
+  color: #fff;
+  text-align: right;
+  position: relative;
+  font-weight: 700;
+  text-shadow: 1px 1px #000;
+  font-size: 11px;
+  float: left;
+  margin: 16px 13px 5px 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#itemname {
+  top: 56px;
+  width: 88px;
+  color: rgba(255, 255, 255);
+  background: rgba(0, 0, 0, 0.5);
+  text-align: center;
+  padding: 9px 15px;
+  position: relative;
+  font-weight: 700;
+  border-radius: 0 0 4px 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+  float: left;
+}
+
+.pegar,
+.guardar {
+  color: #fff;
+  background: rgba(0, 0, 0, 0.6);
+  width: 150px;
+  padding: 15px 0;
+  text-align: center;
+  margin-bottom: 10px;
+  font-weight: 700;
+  border-radius: 4px;
+}
+
+.qtd {
+  background: rgba(0, 0, 0, 0.6);
+  border: 0;
+  color: #fff;
+  width: 150px;
+  padding: 15px 0;
+  text-align: center;
+  margin-bottom: 10px;
+  font-weight: 700;
+  margin-top: 4px;
+  border-radius: 4px;
+}
+
+.hoverControl {
+  background-color: rgba(190, 5, 135,.2);
+}

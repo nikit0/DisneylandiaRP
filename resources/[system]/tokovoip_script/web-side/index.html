@@ -1,0 +1,102 @@
+<html>
+	<head>
+		<title>⠀</title>
+		<style>
+			.tokovoipInfo {
+				position: absolute;
+				padding: 5px;
+				font-family:Arial;
+				font-weight: bold;
+				color: white;
+			}
+			.pluginScreen {
+				display: none;
+				position: absolute;
+				background: rgba(0, 0, 0, 1);
+				width: 100%;
+				height: 100%;
+				top: 0;
+				left: 0;
+			}
+			.pluginScreenWindow {
+				background: rgba(0 0 70);
+				width: 300px;
+				height: auto;
+				margin-left: auto;
+				margin-right: auto;
+				position: relative;
+				top: 50%;
+				transform: translateY(-51%);
+				border-radius: 25px;
+				padding: 20px;
+				color: rgb(255, 255, 255);
+				font-family: Tahoma, Geneva, sans-serif;
+				font-size: 12px;
+				text-shadow: 1px 1px #000000;
+				font-weight: bold;
+			}
+			.talking {
+				color: rgba(244, 196, 65, 255);
+			}
+			.normal {
+				color: #ff89e5;
+			}
+			.copyrights {
+				padding: 5px;
+				padding-bottom: 0;
+				color: white;
+				opacity: 0.2;
+				font-size: 12px;
+			}
+		</style>
+		<script src="nui://game/ui/jquery.js" type="text/javascript"></script>
+		<script src="jquery.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div id="pluginScreen" class="pluginScreen">
+			<div id="pluginScreenWindow" class="pluginScreenWindow">
+				<div style="font-size:25px;color:#f0eb01;text-align:center;margin-bottom:20px;">
+					<img src="dlgames.gif" width="96" alt=""> <br>
+				</div>
+				<font color="#ff00c8">TokoVOIP</font> é a nossa substituição de VOIP no jogo, usando um Plugin personalizado no Teamspeak3..
+
+				<br><br>
+
+				Isso nos dá muito mais <font color="#ff89e5">possibilidades</font>, que atualmente permitem coisas como:
+				<ul>
+					<li> Melhor qualidade de voz </li>
+                    <li> Sistema de rádio </li>
+                    <li> Bate-papo de proximidade exclusivo para cada jogador </li>
+                    <li> Telefonemas </li>
+                    <li> Cliques de rádio </li>
+                    <li> Efeitos de rádio </li>
+				</ul>
+
+				<br>
+
+				<font color="#ff00c8">TokoVOIP</font> tem que ser <font color="#ff89e5">instalado</font> e <font color="#ff89e5">rodando</font> para jogar nos nossos servidores.
+				<br><br>
+				Entre em nosso DISCORD e peça a TAG de morador para seguir um tutorial de instalação <font color="#ff89e5">https://discord.gg/dlgames</font>
+				<br><br>
+
+				<div id="TSServer">
+					Servidor TeamSpeak:
+				</div>
+				<div id="TSChannel">
+					Canal TeamSpeak:
+				</div>
+				<br>
+				<div id="pluginStatus">
+					Status do Plugin:
+				</div>
+				<div id="pluginVersion">
+					Versão do Plugin:
+				</div>
+			</div>
+		</div>
+		<div class="copyrights">
+		</div>
+		<div id="tokovoipInfo" class="tokovoipInfo">
+		</div>
+	</body>
+</html>

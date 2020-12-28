@@ -1,0 +1,330 @@
+* {
+    padding: 0;
+    margin: 0;
+    font-family: 'Signika', sans-serif;
+    color: white;
+    text-shadow: -0.5px -0.5px 0 #000, 0.5px -0.5px 0 #000, -0.5px 0.5px 0 #000, 0.5px 0.5px 0 #000;
+    -webkit-user-select: none;
+}
+
+.ui {
+    position: relative;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.45);
+    display: none;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.inventory {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 1550px;
+    height: 450px;
+}
+
+#playerInventory {
+    width: 625px;
+    height: 450px;
+    float: left;
+    overflow-y: scroll;
+}
+
+#controls {
+    width: 300px;
+    height: 450px;
+    float: left;
+    position: relative;
+    left: 0;
+    top: 0;
+}
+
+#description {
+    width: 400px;
+    height: 450px;
+    position: absolute;
+    top: 110%;
+    left: 50%;
+    transform: translate(-50%);
+    
+    display: flex;
+    flex-direction: column;
+
+}
+
+.desc {
+    text-shadow: 1px 1px #000;
+}
+
+.desc-hr {
+    margin: 8px 0 20px 0;
+}
+
+#otherInventory {
+    width: 625px;
+    height: 450px;
+    float: left;
+    overflow-y: scroll;
+}
+
+#count,
+#search {
+    border: none;
+    font-size: 18px;
+}
+
+#info-div {
+    display: flex;
+    margin: 0 5px;
+}
+
+#ply-id, #second-id {
+    width: 42%;
+    display: flex;
+    flex-flow: column;
+    font-size: 12px;
+}
+
+#info-identity {
+    width: 39.5%;
+    float: left;
+    padding: 0.3% 0.2%;
+    font-size: 14px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    position: absolute; 
+    left: 0.1%; 
+    top: -25%;
+    border-right: 4px solid rgba(94, 158, 214, 0.45);
+}
+
+#info-identity b {
+    text-shadow: none;
+    color: rgba(94, 158, 214);
+}
+
+#divider {
+    width: 21%;
+}
+
+#ply-id strong,
+#second-id strong {
+    font-size: 16px;
+}
+
+#weight b,
+#amount b,
+#quality b {
+    font-size: 14px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type='number'] {
+    -moz-appearance: textfield;
+}
+
+.slot,
+.slotOther {
+    float: left;
+    width: 117px;
+    height: 127px;
+    background-color: rgba(255, 255, 255, 0.05);
+    margin: 2px;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.slot:hover,
+.slotOther:hover {
+    opacity: 0.8;
+}
+
+.item,
+.itemOther {
+    width: 117px;
+    height: 117px;
+    background-size: 75px;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+}
+
+.item-name {
+    position: absolute;
+    bottom: 0;
+    text-align: center;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    width: 117px;
+    min-height: 12px;
+    z-index: 500;
+    font-size: 12px;
+    background-color: rgba(5, 5, 5, 0.35);
+}
+
+.ui-draggable-dragging .item-name,
+.ui-draggable-dragging .item-count {
+    display: none;
+}
+
+.item-count {
+    position: absolute;
+    top: 0;
+    text-align: right;
+    margin: 2px 2px 0 0;
+    width: 115px;
+    height: 20px;
+    z-index: 500;
+    font-size: 12px;
+}
+
+.ammoIcon {
+    width: 10px;
+    height: 10px;
+}
+
+.controls-div {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.control {
+    width: 150px;
+    height: 40px;
+    background-color: rgba(5, 5, 5, 0.35);
+    margin: 2px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 40px;
+}
+
+.control.disabled {
+    background-color: rgba(5, 5, 5, 0.1);
+}
+
+.hoverControl {
+    background-color: rgb(10, 2, 10);
+}
+
+.item-name-bg {
+    width: 100%;
+    width: 100px;
+    height: 20px;
+    position: absolute;
+    bottom: 0;
+}
+
+#playerInventory::-webkit-scrollbar-track,
+#otherInventory::-webkit-scrollbar-track {
+    background-color: none;
+    border: none;
+}
+
+#playerInventory::-webkit-scrollbar,
+#otherInventory::-webkit-scrollbar {
+    width: 5px;
+    background-color: rgba(17, 5, 17, 0.2);
+    border-radius: 3px;
+}
+
+#playerInventory::-webkit-scrollbar-thumb,
+#otherInventory::-webkit-scrollbar-thumb {
+    background-color: rgba(94, 158, 214, 0.45);
+    border-radius: 3px;
+}
+
+@media (max-width: 1500px) {
+    .inventory {
+        width: 1300px;
+    }
+
+    #playerInventory {
+        width: 550px;
+        height: 412.5px;
+    }
+
+    #controls {
+        width: 200px;
+    }
+
+    #otherInventory {
+        width: 550px;
+        height: 412.5px;
+    }
+
+    .slot,
+    .slotOther {
+        width: 100px;
+        height: 110px;
+    }
+
+    .item-count {
+        width: 98px;
+    }
+
+    .item-name {
+        width: 100px;
+    }
+
+    .item,
+    .itemOther {
+        width: 100px;
+        height: 100px;
+        background-size: 63px;
+        background-repeat: no-repeat;
+        background-position: 50% 50%;
+    }
+}
+
+@media (max-width: 1300px) {
+    .inventory {
+        width: 1000px;
+    }
+
+    #playerInventory {
+        width: 425px;
+    }
+
+    #controls {
+        width: 150px;
+    }
+
+    #otherInventory {
+        width: 425px;
+    }
+
+    .slot,
+    .slotOther {
+        width: 78px;
+        height: 85px;
+    }
+
+    .item-count {
+        width: 76px;
+    }
+
+    .item-name {
+        width: 78px;
+    }
+
+    .item,
+    .itemOther {
+        width: 78px;
+        height: 78px;
+        background-size: 60px;
+        background-repeat: no-repeat;
+        background-position: 50% 50%;
+    }
+}

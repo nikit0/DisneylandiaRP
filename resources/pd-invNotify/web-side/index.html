@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Signika" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+
+<body>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <div class="notify"></div>
+</body>
+<script>
+    $(document).ready(() => {
+        window.addEventListener('message', function(event) {
+            let html = `<div class="slot"><div class="item" style="background-image: url(nui://pd-inventory/web-side/images/${event.data.icon}">
+                            <div class="item-status">${event.data.status}</div>
+                            <div class="item-name">${event.data.item}</div>
+                            <div class="item-name-bg"></div>
+                        </div></div>`
+
+            $(html)
+                .appendTo('.notify')
+                .hide()
+                .fadeIn(700)
+                .delay(1500)
+                .fadeOut(700)
+        })
+    })
+</script>
+</html>

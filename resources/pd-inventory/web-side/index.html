@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="https://fonts.googleapis.com/css?family=Signika" rel="stylesheet" />
+        <link rel="stylesheet" type="text/css" href="style.css" />
+        <link rel="stylesheet" type="text/css" href="jquery-ui.css" />
+    </head>
+
+    <body>
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+        <script src="jquery.js"></script>
+
+        <div class="ui">
+            <div class="inventory">
+                <div id="info-div">
+                    <div id="info-identity"></div>
+                    <div id="ply-id">
+                        <strong>none</strong>
+                        <span>0.0kg / 0.0kg</span>
+                    </div>
+                    <div id="divider"></div>
+                    <div id="second-id">
+                        <strong>none</strong>
+                        <span>0.0kg / 0.0kg</span>
+                    </div>
+                </div>
+                
+                <div id="playerInventory"></div>
+
+                <div id="controls">
+                    <div class="controls-div">
+                        <input class="control" id="count" type="number" value="1" oninput="validity.valid||(value='');" />
+                        <div class="control" id="use">Usar</div>
+                        <div class="control" id="send">Enviar</div>
+                        <br /><br />
+                        <div class="control" id="close" style="background: rgba(150,0,0,0.35);" onclick="$.post('http://pd-inventory/NUIFocusOff')">
+                            Fechar
+                        </div>
+                    </div>
+                </div>
+
+                <div id="otherInventory"></div>
+
+                <div id="description">
+                    <strong class="desc" id="name"></strong>
+                    <p class="desc" id="desc" style="font-size: 12px; margin-top: 5px;">You broke it</p>
+                    <div
+                        class="desc-hr"
+                        style="height: 1px; width: 400px; background: rgba(255,255,255,0.4); box-shadow: 1px 1px #000;"
+                    ></div>
+                    <p class="desc" id="weight" style="font-size: 12px"><strong>Weight:</strong></p>
+                    <p class="desc" id="amount" style="font-size: 12px"><strong>Amount:</strong></p>
+                    <!-- <p class="desc" id="quality" style="font-size: 12px"><strong>Quality:</strong></p> -->
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

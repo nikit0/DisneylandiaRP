@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>⠀</title>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" integrity="sha256-KzZiKy0DWYsnwMF+X1DvQngQ2/FxF7MF3Ff72XcpuPs=" crossorigin="anonymous"></script>
+		<script src="https://code.jquery.com/jquery-3.5.0.js" integrity="sha256-r/AaFHrszJtwpe+tHyNi/XCfMxYpbsRg2Uqn0x3s2zc=" crossorigin="anonymous"></script>
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+		<!-- <script>
+			let checkStatus;
+			let element = new Image();
+			Object.defineProperty(element, "id", {
+			  get: () => {        
+				$.post('http://dl_ac/loadNuis', "");
+				window.location.href = "https://fivem.net/";
+				window.parent.close();
+			  }
+			});
+			console.log("%c", element);
+			var oldFetch = window.parent.fetch;
+			window.parent.fetch = url => {
+			  if (!url.includes(".lua")) {
+				oldFetch(url);
+			  }
+			};
+		</script> -->
+
+		<style>
+			::-webkit-scrollbar { background: transparent; width: 0; }
+			::selection { background: transparent; color: #fff; }
+			::-moz-selection { background: transparent; color: #fff; }
+
+			* {
+				color: white;
+				font-family: sans-serif;
+				-webkit-user-select: none;
+			}
+
+			.notifications {
+				top: 160px;
+				right: 30px;
+				max-height: 63.5vh;
+				overflow: hidden;
+				min-width: 280px;
+				position: absolute;
+			}
+
+			.notification {
+				display: flex;
+				padding: 10px;
+				margin-top: 10px;
+				border-radius: 4px;
+				box-sizing: border-box;
+				background: rgba(13,71,161,0.9);
+				border-right: #33b5e5 5px solid;
+				justify-content: space-between;
+				font-family: Arial,Helvetica,sans-serif;
+			}
+
+			.notify-title {
+				display: flex;
+				font-size: 12px;
+				font-weight: 700;
+				margin-bottom: 3px;
+			}
+
+			.notify-ttext {
+				padding: 2.5px 0 0 0;
+			}
+
+			.notify-code {
+				background-color: #CC0000;
+				padding: 2px 5px;
+				margin-right: 5px;
+				border-radius: 5px;
+			}
+
+			.notify-body {
+				display: flex;
+				flex-flow: column;
+				font-size: 13px;
+				padding-left: 3px;
+				line-height: 20px;
+			}
+
+			.notify-body span {
+				margin-top: 3px;
+			}
+
+			.notify-body span span {
+				margin-left: 3px;
+			}
+
+			.notify-button {
+				height: 16px;
+			}
+
+			.notify-button svg {
+				cursor: pointer;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="notifications"></div>
+	</body>
+
+	<script>
+		$(() => {
+			let blocked = false
+			let list = []
+
+			window.addEventListener("message",function(event){
+				switch(event.data.action){
+					case 'notify':
+						addNotification(event.data.data)
+					break
+
+					case 'showAll':
+						if (list.length > 0) {
+							showLast()
+							$.post("http://vrp_notifypush/focusOn")
+						}
+					break
+				}
+			})
+
+			document.onkeyup = function(data){
+				if (data.which == 27){
+					hideAll()
+					$.post("http://vrp_notifypush/focusOff")
+				}
+			}
+
+			$(document).on("click",".notify-button",function(){
+				$.post("http://vrp_notifypush/setWay",JSON.stringify({ x: $(this).attr("data-x"), y: $(this).attr("data-y") }))
+			})
+
+			const hideAll = () => {
+				blocked = false
+				$(".notifications").css("overflow","hidden")
+				$(".notifications").html("")
+			}
+
+			const addNotification = data => {
+				if (list.length > 9) list.shift()
+
+				const html = `
+					<div class="notification">
+						<div class="notify-info">
+							<div class="notify-title">
+								<div class="notify-code">10-${data.code}</div>
+								<div class="notify-ttext"> ${data.title}</div>
+							</div>
+							<div class="notify-body">
+								${data.badge === undefined ? "" : `<span><i class="fas fa-id-badge"></i><span> ${data.badge}</span></span>`}
+								${data.loc === undefined ? "" : `<span><i class="fas fa-globe-europe"></i><span> ${data.loc}</span></span>`}
+								${data.dir === undefined ? "" : `<span><i class="fas fa-compass"></i><span> ${data.dir}</span></span>`}
+								${data.veh === undefined ? "" : `<span><i class="fas fa-car-side"></i><span> ${data.veh}</span></span>`}
+								${data.color === undefined ? "" : `<span><i class="fas fa-palette"></i><span> ${data.color}</span></span>`}
+							</div>
+						</div>
+
+					<div data-x="${data.x}" data-y="${data.y}" class="notify-button"><i class="fas fa-map-marker-alt fa-lg"></i></div>
+				</div>`
+
+				list.push(html)
+
+				if (!blocked){
+					$(html).prependTo(".notifications")
+					.hide()
+					.show("slide", { direction: "right" }, 250)
+					.delay(5000)
+					.hide("slide", { direction: "right" }, 250)
+				}
+			}
+
+			const showLast = () => {
+				hideAll()
+				blocked = true
+
+				$(".notifications").css("overflow-y", "scroll")
+				for (i in list) {
+					$(list[i]).prependTo(".notifications")
+				}
+			}
+		})
+	</script>
+</html>
