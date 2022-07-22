@@ -1,2 +1,5 @@
+/.vscode
 /artifacts
 /cache
+/resources/.vscode
+imgui.ini

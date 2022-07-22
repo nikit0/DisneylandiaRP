@@ -3,57 +3,57 @@ local noclip = false
 function tvRP.toggleNoclip(boolean)
 	noclip = not noclip
 	local ped = PlayerPedId()
-	
+
 	if noclip then
 		if boolean then
-			SetEntityInvincible(ped,true)
-			SetEntityVisible(ped,false,false)
+			SetEntityInvincible(ped, true)
+			SetEntityVisible(ped, false, false)
 		else
-			TriggerServerEvent("trySyncParticle","noclip",PedToNet(ped))
-			SetEntityInvincible(ped,true)
-			SetEntityVisible(ped,false,false)
+			TriggerServerEvent("trySyncParticle", "noclip", PedToNet(ped))
+			SetEntityInvincible(ped, true)
+			SetEntityVisible(ped, false, false)
 		end
 	else
 		if boolean then
-			SetEntityInvincible(ped,false)
-			SetEntityVisible(ped,true,false)
+			SetEntityInvincible(ped, false)
+			SetEntityVisible(ped, true, false)
 		else
-			TriggerServerEvent("trySyncParticle","noclip",PedToNet(ped))
-			Citizen.Wait(1000)
-			SetEntityInvincible(ped,false)
-			SetEntityVisible(ped,true,false)
+			TriggerServerEvent("trySyncParticle", "noclip", PedToNet(ped))
+			Wait(1000)
+			SetEntityInvincible(ped, false)
+			SetEntityVisible(ped, true, false)
 		end
 	end
 end
 
-Citizen.CreateThread(function()
+CreateThread(function()
 	while true do
-		Citizen.Wait(1)
+		Wait(1)
 		if noclip then
 			local ped = PlayerPedId()
-			local x,y,z = tvRP.getPosition()
-			local dx,dy,dz = tvRP.getCamDirection()
+			local x, y, z = tvRP.getPosition()
+			local dx, dy, dz = tvRP.getCamDirection()
 			local speed = 1.0
 
-			SetEntityVelocity(ped,0.0001,0.0001,0.0001)
+			SetEntityVelocity(ped, 0.0001, 0.0001, 0.0001)
 
-			if IsControlPressed(0,21) and IsInputDisabled(0) then
+			if IsControlPressed(0, 21) and IsInputDisabled(0) then
 				speed = 5.0
 			end
 
-			if IsControlPressed(0,32) and IsInputDisabled(0) then
-				x = x+speed*dx
-				y = y+speed*dy
-				z = z+speed*dz
+			if IsControlPressed(0, 32) and IsInputDisabled(0) then
+				x = x + speed * dx
+				y = y + speed * dy
+				z = z + speed * dz
 			end
 
-			if IsControlPressed(0,269) and IsInputDisabled(0) then
-				x = x-speed*dx
-				y = y-speed*dy
-				z = z-speed*dz
+			if IsControlPressed(0, 269) and IsInputDisabled(0) then
+				x = x - speed * dx
+				y = y - speed * dy
+				z = z - speed * dz
 			end
 
-			SetEntityCoordsNoOffset(ped,x,y,z,true,true,true)
+			SetEntityCoordsNoOffset(ped, x, y, z, true, true, true)
 		end
 	end
 end)
@@ -61,9 +61,9 @@ end)
 local handcuffed = false
 function tvRP.toggleHandcuff()
 	handcuffed = not handcuffed
-	SetEnableHandcuffs(PlayerPedId(),handcuffed)
+	SetEnableHandcuffs(PlayerPedId(), handcuffed)
 	if handcuffed then
-		tvRP.playAnim(true,{"mp_arresting","idle"},true)
+		tvRP.playAnim(true, { "mp_arresting", "idle" }, true)
 	else
 		tvRP.stopAnimActived()
 		tvRP.stopAnim(true)
@@ -80,11 +80,11 @@ function tvRP.isHandcuffed()
 	return handcuffed
 end
 
-Citizen.CreateThread(function()
+CreateThread(function()
 	while true do
-		Citizen.Wait(15000)
+		Wait(15000)
 		if handcuffed then
-			tvRP.playAnim(true,{"mp_arresting","idle"},true)
+			tvRP.playAnim(true, { "mp_arresting", "idle" }, true)
 		end
 	end
 end)
@@ -93,11 +93,11 @@ local capuz = false
 function tvRP.toggleCapuz()
 	capuz = not capuz
 	if capuz then
-		tvRP.setDiv("capuz",".div_capuz { background: #000; margin: 0; width: 100%; height: 100%; }","")
-		SetPedComponentVariation(PlayerPedId(),1,69,2,2)
+		tvRP.setDiv("capuz", ".div_capuz { background: #000; margin: 0; width: 100%; height: 100%; }", "")
+		SetPedComponentVariation(PlayerPedId(), 1, 69, 2, 2)
 	else
 		tvRP.removeDiv("capuz")
-		SetPedComponentVariation(PlayerPedId(),1,0,0,2)
+		SetPedComponentVariation(PlayerPedId(), 1, 0, 0, 2)
 	end
 end
 
@@ -119,28 +119,28 @@ function tvRP.toggleMalas()
 
 	if IsEntityAVehicle(vehicle) and GetVehicleClass(vehicle) ~= 8 and GetVehicleClass(vehicle) ~= 13 then
 		if mala then
-			AttachEntityToEntity(ped,vehicle,GetEntityBoneIndexByName(vehicle,"bumper_r"),0.6,-0.4,-0.1,60.0,-90.0,180.0,false,false,false,true,2,true)
-			SetEntityVisible(ped,false)
-			SetEntityInvincible(ped,true)
+			AttachEntityToEntity(ped, vehicle, GetEntityBoneIndexByName(vehicle, "bumper_r"), 0.6, -0.4, -0.1, 60.0, -90.0, 180.0, false, false, false, true, 2, true)
+			SetEntityVisible(ped, false)
+			SetEntityInvincible(ped, true)
 		else
-			DetachEntity(ped,true,true)
-			SetEntityVisible(ped,true)
-			SetEntityInvincible(ped,false)
-			SetPedToRagdoll(ped,2000,2000,0,0,0,0)
+			DetachEntity(ped, true, true)
+			SetEntityVisible(ped, true)
+			SetEntityInvincible(ped, false)
+			SetPedToRagdoll(ped, 2000, 2000, 0, 0, 0, 0)
 		end
-		TriggerServerEvent("trymala",VehToNet(vehicle))
+		TriggerServerEvent("trymala", VehToNet(vehicle))
 	end
 end
 
 RegisterNetEvent("syncmala")
-AddEventHandler("syncmala",function(index)
+AddEventHandler("syncmala", function(index)
 	if NetworkDoesNetworkIdExist(index) then
 		local v = NetToVeh(index)
 		if DoesEntityExist(v) then
 			if IsEntityAVehicle(v) then
-				SetVehicleDoorOpen(v,5,0,0)
-				Citizen.Wait(1000)
-				SetVehicleDoorShut(v,5,0)
+				SetVehicleDoorOpen(v, 5, 0, 0)
+				Wait(1000)
+				SetVehicleDoorShut(v, 5, 0)
 			end
 		end
 	end
@@ -167,9 +167,9 @@ end
 function tvRP.putInNearestVehicleAsPassenger(radius)
 	local veh = tvRP.getNearestVehicle(radius)
 	if IsEntityAVehicle(veh) then
-		for i=1,math.max(GetVehicleMaxNumberOfPassengers(veh),3) do
-			if IsVehicleSeatFree(veh,i) then
-				SetPedIntoVehicle(PlayerPedId(),veh,i)
+		for i = 1, math.max(GetVehicleMaxNumberOfPassengers(veh), 3) do
+			if IsVehicleSeatFree(veh, i) then
+				SetPedIntoVehicle(PlayerPedId(), veh, i)
 				return true
 			end
 		end
@@ -177,57 +177,57 @@ function tvRP.putInNearestVehicleAsPassenger(radius)
 	return false
 end
 
-Citizen.CreateThread(function()
+CreateThread(function()
 	while true do
-		Citizen.Wait(1)
+		Wait(1)
 		if handcuffed or mala or capuz then
 			BlockWeaponWheelThisFrame()
-			DisableControlAction(0,20,true)
-			DisableControlAction(0,21,true)
-			DisableControlAction(0,22,true)
-			DisableControlAction(0,23,true)
-			DisableControlAction(0,24,true)
-			DisableControlAction(0,25,true)
-			DisableControlAction(0,29,true)
-			DisableControlAction(0,32,true)
-			DisableControlAction(0,33,true)
-			DisableControlAction(0,34,true)
-			DisableControlAction(0,35,true)
-			DisableControlAction(0,56,true)
-			DisableControlAction(0,57,true)
-			DisableControlAction(0,58,true)
-			DisableControlAction(0,73,true)
-			DisableControlAction(0,75,true)
-			DisableControlAction(0,137,true)
-			DisableControlAction(0,140,true)
-			DisableControlAction(0,141,true)
-			DisableControlAction(0,142,true)
-			DisableControlAction(0,143,true)
-			DisableControlAction(0,166,true)
-			DisableControlAction(0,167,true)
-			DisableControlAction(0,170,true)
-			DisableControlAction(0,177,true)
-			DisableControlAction(0,178,true)
-			DisableControlAction(0,182,true)
-			DisableControlAction(0,187,true)
-			DisableControlAction(0,188,true)
-			DisableControlAction(0,189,true)
-			DisableControlAction(0,190,true)
-			DisableControlAction(0,243,true)
+			DisableControlAction(0, 20, true)
+			DisableControlAction(0, 21, true)
+			DisableControlAction(0, 22, true)
+			DisableControlAction(0, 23, true)
+			DisableControlAction(0, 24, true)
+			DisableControlAction(0, 25, true)
+			DisableControlAction(0, 29, true)
+			DisableControlAction(0, 32, true)
+			DisableControlAction(0, 33, true)
+			DisableControlAction(0, 34, true)
+			DisableControlAction(0, 35, true)
+			DisableControlAction(0, 56, true)
+			DisableControlAction(0, 57, true)
+			DisableControlAction(0, 58, true)
+			DisableControlAction(0, 73, true)
+			DisableControlAction(0, 75, true)
+			DisableControlAction(0, 137, true)
+			DisableControlAction(0, 140, true)
+			DisableControlAction(0, 141, true)
+			DisableControlAction(0, 142, true)
+			DisableControlAction(0, 143, true)
+			DisableControlAction(0, 166, true)
+			DisableControlAction(0, 167, true)
+			DisableControlAction(0, 170, true)
+			DisableControlAction(0, 177, true)
+			DisableControlAction(0, 178, true)
+			DisableControlAction(0, 182, true)
+			DisableControlAction(0, 187, true)
+			DisableControlAction(0, 188, true)
+			DisableControlAction(0, 189, true)
+			DisableControlAction(0, 190, true)
+			DisableControlAction(0, 243, true)
 			--DisableControlAction(0,245,true)
 			--DisableControlAction(0,246,true)
-			DisableControlAction(0,257,true)
-			DisableControlAction(0,263,true)
-			DisableControlAction(0,264,true)
-			DisableControlAction(0,268,true)
-			DisableControlAction(0,269,true)
-			DisableControlAction(0,270,true)
-			DisableControlAction(0,271,true)
-			DisableControlAction(0,288,true)
-			DisableControlAction(0,289,true)
+			DisableControlAction(0, 257, true)
+			DisableControlAction(0, 263, true)
+			DisableControlAction(0, 264, true)
+			DisableControlAction(0, 268, true)
+			DisableControlAction(0, 269, true)
+			DisableControlAction(0, 270, true)
+			DisableControlAction(0, 271, true)
+			DisableControlAction(0, 288, true)
+			DisableControlAction(0, 289, true)
 			--DisableControlAction(0,303,true)
-			DisableControlAction(0,311,true)
-			DisableControlAction(0,344,true)	
+			DisableControlAction(0, 311, true)
+			DisableControlAction(0, 344, true)
 		end
 	end
 end)
@@ -244,11 +244,11 @@ end)
 	return false
 end]]
 
-function tvRP.checkDistance(x2,y2,z2,radius)
+function tvRP.checkDistance(x2, y2, z2, radius)
 	local ped = PlayerPedId()
-	local x,y,z = table.unpack(GetEntityCoords(ped))
-	local bowz,cdz = GetGroundZFor_3dCoord(x2,y2,z2)
-	local distance = GetDistanceBetweenCoords(x2,y2,cdz,x,y,z,true)
+	local x, y, z = table.unpack(GetEntityCoords(ped))
+	local bowz, cdz = GetGroundZFor_3dCoord(x2, y2, z2)
+	local distance = GetDistanceBetweenCoords(x2, y2, cdz, x, y, z, true)
 	if distance <= radius then
 		return true
 	end

@@ -1,16 +1,3 @@
------------------------------------------------------------------------------------------------------------------------------------------
--- WEBHOOK
------------------------------------------------------------------------------------------------------------------------------------------
-local webhookbaucasa = "https://discordapp.com/api/webhooks/595667589837881346/Eg6b-cri7HI2NkrhJ2v0DiTK-veTcSyMXWlf9eBU-jjymJokJEvajEvn4Tjerzq_hYJy"
-local webhookbaustatic = "https://discordapp.com/api/webhooks/615151216283877377/E7OAhXDZNCU82F87MRiEXLLDvX7vvDwJ-wAASqm-OE-S_5GIiiXIb5p1U3pAvA9sE7up"
-local webhookbaustaticpolicia = "https://discordapp.com/api/webhooks/616171780217765888/VBkr8-d-NodLpagHOkcI1PP3_pK86lzXKbJD3tdgasUE17O3bM7nWXyb_yjiTHY7-kZb"
-
-function SendWebhookMessage(webhook,message)
-	if webhook ~= nil and webhook ~= "" then
-		PerformHttpRequest(webhook, function(err, text, headers) end, 'POST', json.encode({content = message}), { ['Content-Type'] = 'application/json' })
-	end
-end
-
 function vRP.itemNameList(item)
 	if itemlist[item] ~= nil then
 		return itemlist[item].nome
@@ -147,8 +134,12 @@ function vRP.getInventoryWeight(user_id)
 	return 0
 end
 
+function vRP.expToLevel(exp)
+	return (math.sqrt(1+8*exp/4)-1)/2
+end
+
 function vRP.getInventoryMaxWeight(user_id)
-	return math.floor(vRP.expToLevel(vRP.getExp(user_id,"physical","strength")))*3
+	return math.floor(vRP.expToLevel(90))
 end
 
 RegisterServerEvent("clearInventory")

@@ -7,8 +7,10 @@ window.APP = {
       showInput: false,
       showWindow: false,
       shouldHide: true,
+      backingSuggestions: [],
+      removedSuggestions: [],
       templates: CONFIG.templates,
-      message: '',
+      message: '/',
       messages: [],
       oldMessages: [],
       oldMessagesIndex: -1,
@@ -21,7 +23,7 @@ window.APP = {
     window.removeEventListener('message', this.listener);
   },
   mounted() {
-    post('http://chat/loaded', JSON.stringify({}));
+    post('http://chat/loaded');
     this.listener = window.addEventListener('message', (event) => {
       const item = event.data || event.detail;
       if (this[item.type]) {
@@ -41,6 +43,11 @@ window.APP = {
       this.$nextTick(() => {
         messagesObj.scrollTop = messagesObj.scrollHeight;
       });
+    },
+  },
+  computed: {
+    suggestions() {
+      return this.backingSuggestions.filter((el) => this.removedSuggestions.indexOf(el.name) <= -1);
     },
   },
   methods: {
@@ -68,6 +75,29 @@ window.APP = {
       this.messages = [];
       this.oldMessages = [];
       this.oldMessagesIndex = -1;
+    },
+    ON_SUGGESTION_ADD({ suggestion }) {
+      const duplicateSuggestion = this.backingSuggestions.find(a => a.name == suggestion.name);
+      if (duplicateSuggestion) {
+        if(suggestion.help || suggestion.params) {
+          duplicateSuggestion.help = suggestion.help || "";
+          duplicateSuggestion.params = suggestion.params || [];
+        }
+        return;
+      }
+      if (!suggestion.params) {
+        suggestion.params = []; //TODO Move somewhere else
+      }
+      this.backingSuggestions.push(suggestion);
+    },
+    ON_SUGGESTION_REMOVE({ name }) {
+      if(this.removedSuggestions.indexOf(name) <= -1) {
+        this.removedSuggestions.push(name);
+      }
+    },
+    ON_SUGGESTIONS_REMOVE() {
+      this.backingSuggestions = [];
+      this.removedSuggestions = [];
     },
     ON_TEMPLATE_ADD({ template }) {
       if (this.templates[template.id]) {
@@ -196,7 +226,7 @@ window.APP = {
         this.message = this.oldMessages[this.oldMessagesIndex];
       } else if (!up && this.oldMessagesIndex - 1 === -1) {
         this.oldMessagesIndex = -1;
-        this.message = '';
+        this.message = '/';
       }
     },
     resize() {
@@ -220,7 +250,7 @@ window.APP = {
       if (canceled) {
         post('http://chat/chatResult', JSON.stringify({ canceled }));
       }
-      this.message = '';
+      this.message = '/';
       this.showInput = false;
       clearInterval(this.focusTimer);
       this.resetShowWindowTimer();

@@ -1,138 +1,154 @@
+-----------------------------------------------------------------------------------------------------------------------------------------
+-- VRP
+-----------------------------------------------------------------------------------------------------------------------------------------
 local Tunnel = module("vrp","lib/Tunnel")
 local Proxy = module("vrp","lib/Proxy")
+vRP = Proxy.getInterface("vRP")
+-----------------------------------------------------------------------------------------------------------------------------------------
+-- CONNECTION
+-----------------------------------------------------------------------------------------------------------------------------------------
+cRP = {}
+Tunnel.bindInterface("chat",cRP)
+-----------------------------------------------------------------------------------------------------------------------------------------
+-- VARIABLES
+-----------------------------------------------------------------------------------------------------------------------------------------
+local chatOpen = false
+local chatActive = true
+-----------------------------------------------------------------------------------------------------------------------------------------
+-- CHATMESSAGE
+-----------------------------------------------------------------------------------------------------------------------------------------
+RegisterNetEvent("chatMessage")
+AddEventHandler("chatMessage",function(author,color,text)
+	if chatActive then
+		local args = { text }
+		if author ~= "" then
+			table.insert(args,1,author)
+		end
 
-local chatInputActive = false
-local chatInputActivating = false
-local chatHidden = true
-local chatLoaded = false
-
-RegisterNetEvent('chatMessage')
-RegisterNetEvent('chat:addTemplate')
-RegisterNetEvent('chat:addMessage')
-RegisterNetEvent('chat:clear')
-RegisterNetEvent('__cfx_internal:serverPrint')
-RegisterNetEvent('_chat:messageEntered')
-
-RegisterNetEvent('chatMessageProximity')
-AddEventHandler('chatMessageProximity',function(id,name,firstname,message)
-	local myId = PlayerId()
-	local pid = GetPlayerFromServerId(id)
-	if pid == myId then
-		TriggerEvent('chatMessage',""..name.." "..firstname.."",{131,174,0},message)
-	elseif GetDistanceBetweenCoords(GetEntityCoords(GetPlayerPed(myId)),GetEntityCoords(GetPlayerPed(pid))) < 10.999 then
-		TriggerEvent('chatMessage',""..name.." "..firstname.."",{131,174,0},message)
+		SendNUIMessage({ type = "ON_MESSAGE", message = { color = color, multiline = true, args = args } })
+		SendNUIMessage({ type = "ON_SCREEN_STATE_CHANGE", shouldHide = false })
 	end
 end)
-
-AddEventHandler('chatMessage', function(author, color, text)
-	local args = { text }
-	if author ~= "" then
-		table.insert(args, 1, author)
+-----------------------------------------------------------------------------------------------------------------------------------------
+-- CHATTEXT
+-----------------------------------------------------------------------------------------------------------------------------------------
+RegisterNetEvent("chatText")
+AddEventHandler("chatText",function(text)
+	if chatActive then
+		SendNUIMessage({ type = "ON_MESSAGE", message = { color = {}, multiline = true, args = { text } } })
+		SendNUIMessage({ type = "ON_SCREEN_STATE_CHANGE", shouldHide = false })
 	end
-	SendNUIMessage({ type = 'ON_MESSAGE', message = { color = color, multiline = true, args = args } })
 end)
-
-AddEventHandler('__cfx_internal:serverPrint', function(msg)
-	SendNUIMessage({ type = 'ON_MESSAGE', message = { templateId = 'print', multiline = true, args = { msg } } })
+-----------------------------------------------------------------------------------------------------------------------------------------
+-- SERVERPRINT
+-----------------------------------------------------------------------------------------------------------------------------------------
+RegisterNetEvent("__cfx_internal:serverPrint")
+AddEventHandler("__cfx_internal:serverPrint",function(msg)
+	SendNUIMessage({ type = "ON_MESSAGE", message = { templateId = "print", multiline = true, args = { msg } } })
+	chatOpen = false
 end)
-
-AddEventHandler('chat:addMessage', function(message)
-	SendNUIMessage({ type = 'ON_MESSAGE', message = message })
+-----------------------------------------------------------------------------------------------------------------------------------------
+-- ADDMESSAGE
+-----------------------------------------------------------------------------------------------------------------------------------------
+RegisterNetEvent("chat:addMessage")
+AddEventHandler("chat:addMessage",function(message)
+	SendNUIMessage({ type = "ON_MESSAGE", message = message })
 end)
-
-AddEventHandler('chat:addTemplate', function(id, html)
-	SendNUIMessage({ type = 'ON_TEMPLATE_ADD',template = { id = id, html = html } })
+-----------------------------------------------------------------------------------------------------------------------------------------
+-- CLEAR
+-----------------------------------------------------------------------------------------------------------------------------------------
+RegisterNetEvent("chat:clear")
+AddEventHandler("chat:clear",function(name)
+	SendNUIMessage({ type = "ON_CLEAR" })
 end)
-
-AddEventHandler('chat:clear', function(name)
-	SendNUIMessage({ type = 'ON_CLEAR' })
+-----------------------------------------------------------------------------------------------------------------------------------------
+-- CLEARSUGGESTIONS
+-----------------------------------------------------------------------------------------------------------------------------------------
+RegisterNetEvent("chat:clearSuggestions")
+AddEventHandler("chat:clearSuggestions",function()
+	SendNUIMessage({ type = "ON_SUGGESTIONS_REMOVE" })
 end)
-
-RegisterNUICallback('chatResult', function(data, cb)
-	chatInputActive = false
+-----------------------------------------------------------------------------------------------------------------------------------------
+-- CHATRESULT
+-----------------------------------------------------------------------------------------------------------------------------------------
+RegisterNUICallback("chatResult",function(data,cb)
 	SetNuiFocus(false)
 
-	if not data.canceled then
-		local id = PlayerId()
-		local r, g, b = 0, 0x99, 255
-
-		if data.message:sub(1, 1) == '/' then
-			ExecuteCommand(data.message:sub(2))
+	if data["message"] then
+		if data["message"]:sub(1,1) == "/" then
+			ExecuteCommand(data["message"]:sub(2))
 		else
-			TriggerServerEvent('_chat:messageEntered', GetPlayerName(id), { r, g, b }, data.message)
+			TriggerServerEvent("chat:messageEntered",data["message"])
 		end
 	end
 
-	cb('ok')
+	cb("ok")
 end)
-
-local function refreshThemes()
-	local themes = {}
-
-	for resIdx = 0, GetNumResources() - 1 do
-		local resource = GetResourceByFindIndex(resIdx)
-
-		if GetResourceState(resource) == 'started' then
-			local numThemes = GetNumResourceMetadata(resource, 'chat_theme')
-
-			if numThemes > 0 then
-				local themeName = GetResourceMetadata(resource, 'chat_theme')
-				local themeData = json.decode(GetResourceMetadata(resource, 'chat_theme_extra') or 'null')
-
-				if themeName and themeData then
-					themeData.baseUrl = 'nui://' .. resource .. '/'
-					themes[themeName] = themeData
-				end
-			end
+-----------------------------------------------------------------------------------------------------------------------------------------
+-- ADDSUGGESTION
+-----------------------------------------------------------------------------------------------------------------------------------------
+RegisterNetEvent("chat:addSuggestion")
+AddEventHandler("chat:addSuggestion",function(suggestions)
+	for _,v in ipairs(suggestions) do
+		SendNUIMessage({ type = "ON_SUGGESTION_ADD", suggestion = v })
+	end
+end)
+-----------------------------------------------------------------------------------------------------------------------------------------
+-- LOADED
+-----------------------------------------------------------------------------------------------------------------------------------------
+RegisterNUICallback("loaded",function(data,cb)
+	cb("ok")
+end)
+-----------------------------------------------------------------------------------------------------------------------------------------
+-- CHAT
+-----------------------------------------------------------------------------------------------------------------------------------------
+RegisterCommand("chat",function(source,args)
+	if chatOpen then
+		if chatActive then
+			chatActive = false
+			SendNUIMessage({ type = "ON_CLEAR" })
+		else
+			chatActive = true
 		end
 	end
-	SendNUIMessage({ type = 'ON_UPDATE_THEMES', themes = themes })
-end
-
-AddEventHandler('onClientResourceStart',function(resName)
-	Citizen.Wait(500)
-	refreshThemes()
 end)
-
-RegisterNUICallback('loaded',function(data,cb)
-	refreshThemes()
-	chatLoaded = true
-	cb('ok')
-end)
-
-Citizen.CreateThread(function()
+-----------------------------------------------------------------------------------------------------------------------------------------
+-- THREADSTART
+-----------------------------------------------------------------------------------------------------------------------------------------
+CreateThread(function()
 	SetTextChatEnabled(false)
 	SetNuiFocus(false)
-
-	while true do
-		Citizen.Wait(1)
-		if not chatInputActive then
-			if IsControlPressed(0,245) then
-				chatInputActive = true
-				chatInputActivating = true
-
-				SendNUIMessage({ type = 'ON_OPEN' })
-			end
-		end
-
-		if chatInputActivating then
-			if not IsControlPressed(0,245) then
-				SetNuiFocus(true)
-				chatInputActivating = false
-			end
-		end
-
-		if chatLoaded then
-			local shouldBeHidden = false
-
-			if IsScreenFadedOut() or IsPauseMenuActive() then
-				shouldBeHidden = true
-			end
-
-			if (shouldBeHidden and not chatHidden) or (not shouldBeHidden and chatHidden) then
-				chatHidden = shouldBeHidden
-				SendNUIMessage({ type = 'ON_SCREEN_STATE_CHANGE', shouldHide = shouldBeHidden })
-			end
-		end
+end)
+-----------------------------------------------------------------------------------------------------------------------------------------
+-- OPENCHAT
+-----------------------------------------------------------------------------------------------------------------------------------------
+RegisterCommand("openChat",function(source,args)
+	chatOpen = true
+	SetNuiFocus(true)
+	SendNUIMessage({ type = "ON_OPEN" })
+end)
+-----------------------------------------------------------------------------------------------------------------------------------------
+-- ONCLIENTRESOURCESTART
+-----------------------------------------------------------------------------------------------------------------------------------------
+AddEventHandler("onClientResourceStart",function(resourceName)
+	if (GetCurrentResourceName() ~= resourceName) then
+		return
 	end
+
+	local mHash = GetHashKey("mp_m_freemode_01")
+
+	RequestModel(mHash)
+	while not HasModelLoaded(mHash) do
+		Wait(1)
+	end
+
+	if HasModelLoaded(mHash) then
+		SetPlayerModel(PlayerId(),mHash)
+		SetModelAsNoLongerNeeded(mHash)
+		FreezeEntityPosition(PlayerPedId(),false)
+	end
+
+	TriggerServerEvent("vRPcli:playerSpawned")
+
+	ShutdownLoadingScreen()
 end)

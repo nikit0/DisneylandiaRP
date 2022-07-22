@@ -20,7 +20,7 @@ function vRP.openMenu(source,menudef)
 
 	menudata.name = menudef.name or "Menu"
 	menudata.css = menudef.css or {}
-	menudata.id = menu_ids:gen() 
+	menudata.id = menu_ids:gen()
 
 	client_menus[menudata.id] = { def = menudef, source = source }
 	rclient_menus[source] = menudata.id
@@ -188,11 +188,11 @@ end)
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- WEBHOOK
 -----------------------------------------------------------------------------------------------------------------------------------------
-RegisterServerEvent("Disneylandia:logDiscord")
-AddEventHandler("Disneylandia:logDiscord",function(webhook,message,username)
-    local name = username or GetConvar("discord_user","Disneylandia")
-    local webhookUrl = GetConvar("discord_"..webhook,"")        
-    
+RegisterServerEvent("Disneylandia:webHook")
+AddEventHandler("Disneylandia:webHook",function(webhook,message,username)
+    local name = username or GetConvar("discord_user","DisneylandiaRP")
+    local webhookUrl = GetConvar("discord_"..webhook,"")
+
     if webhookUrl ~= nil and webhookUrl ~= "" then
         PerformHttpRequest(webhookUrl,function(err,text,headers)end,"POST",json.encode({ username = name, content = message }),{[ "Content-Type"] = "application/json" })
     end
