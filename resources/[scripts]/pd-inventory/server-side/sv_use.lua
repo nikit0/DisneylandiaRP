@@ -422,7 +422,7 @@ AddEventHandler("b03461cc:pd-inventory:useItem", function(item, amount)
 			end
 
 			if item == "mochila" then
-				local max = vRP.query("pd-getMax", { user_id = user_id })[1].max
+				local max = vRP.query("vRP/get_max_inv", { user_id = user_id })[1].max
 				--print(max)
 				if max < 90 then
 					if consumeItem(user_id, item, 1, true, "Usou") then
@@ -1147,7 +1147,7 @@ AddEventHandler("b03461cc:pd-inventory:useItem", function(item, amount)
 				if consumeItem(user_id, item, 1, true, "Usou") then
 					local time = string.sub(item, 8)
 					local vip_time = os.time() + time * 24 * 60 * 60
-					vRP.execute("updateVipTime", { id = user_id, vip_time = vip_time })
+					vRP.execute("vRP/update_vip_time", { id = user_id, vip_time = vip_time })
 					vRP.addUserGroup(parseInt(user_id), "Gold")
 					vRP.execute("vRP/add_priority", { id = user_id, priority = 50 })
 
@@ -1159,7 +1159,7 @@ AddEventHandler("b03461cc:pd-inventory:useItem", function(item, amount)
 				if consumeItem(user_id, item, 1, true, "Usou") then
 					local time = string.sub(item, 8)
 					local vip_time = os.time() + time * 24 * 60 * 60
-					vRP.execute("updateVipTime", { id = user_id, vip_time = vip_time })
+					vRP.execute("vRP/update_vip_time", { id = user_id, vip_time = vip_time })
 					vRP.addUserGroup(parseInt(user_id), "Gold")
 					vRP.execute("vRP/add_priority", { id = user_id, priority = 50 })
 
@@ -1171,7 +1171,7 @@ AddEventHandler("b03461cc:pd-inventory:useItem", function(item, amount)
 				if consumeItem(user_id, item, 1, true, "Usou") then
 					local time = string.sub(item, 12)
 					local vip_time = os.time() + time * 24 * 60 * 60
-					vRP.execute("updateVipTime", { id = user_id, vip_time = vip_time })
+					vRP.execute("vRP/update_vip_time", { id = user_id, vip_time = vip_time })
 					vRP.addUserGroup(parseInt(user_id), "Platinum")
 					vRP.execute("vRP/add_priority", { id = user_id, priority = 90 })
 
@@ -1184,7 +1184,7 @@ AddEventHandler("b03461cc:pd-inventory:useItem", function(item, amount)
 				if consumeItem(user_id, item, 1, true, "Usou") then
 					local time = string.sub(item, 12)
 					local vip_time = os.time() + time * 24 * 60 * 60
-					vRP.execute("updateVipTime", { id = user_id, vip_time = vip_time })
+					vRP.execute("vRP/update_vip_time", { id = user_id, vip_time = vip_time })
 					vRP.addUserGroup(parseInt(user_id), "Platinum")
 					vRP.execute("vRP/add_priority", { id = user_id, priority = 90 })
 
@@ -1202,7 +1202,7 @@ AddEventHandler("b03461cc:pd-inventory:useItem", function(item, amount)
 
 			if item == "vipgaragem" then
 				if consumeItem(user_id, item, 1, true, "Usou") then
-					vRP.execute("creative/update_garages", { id = user_id })
+					vRP.execute("vRP/update_garages", { id = user_id })
 
 					TriggerClientEvent("Notify", source, "sucesso", "<b>Adicionado +1 Garagem</b> com sucesso.", 8000)
 				end

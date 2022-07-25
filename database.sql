@@ -42,31 +42,21 @@ CREATE TABLE IF NOT EXISTS `vrp_srv_data` (
 -- Copiando estrutura para tabela disneylandiarp.vrp_users
 CREATE TABLE IF NOT EXISTS `vrp_users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `license` varchar(50) NOT NULL DEFAULT '0',
   `whitelisted` tinyint(1) DEFAULT NULL,
   `banned` tinyint(1) DEFAULT NULL,
   `garagem` int(4) DEFAULT 4,
   `pets` varchar(50) NOT NULL,
   `groups` text NOT NULL DEFAULT '[]',
   `vip_time` int(11) NOT NULL DEFAULT 0,
-  `steam` text NOT NULL,
   `priority` int(4) NOT NULL DEFAULT 0,
   `coins` int(6) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE,
+  KEY `license` (`license`) USING BTREE,
   KEY `whitelisted` (`whitelisted`) USING BTREE,
   KEY `banned` (`banned`) USING BTREE,
   KEY `garagem` (`garagem`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- Exportação de dados foi desmarcado.
-
--- Copiando estrutura para tabela disneylandiarp.vrp_users_banned
-CREATE TABLE IF NOT EXISTS `vrp_users_banned` (
-  `user_id` int(11) DEFAULT NULL,
-  `hacker` int(11) DEFAULT NULL,
-  `identifier` varchar(100) NOT NULL,
-  PRIMARY KEY (`identifier`),
-  KEY `user_id` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Exportação de dados foi desmarcado.
 

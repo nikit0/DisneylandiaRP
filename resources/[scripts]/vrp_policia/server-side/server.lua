@@ -570,7 +570,7 @@ RegisterCommand('detido', function(source, args, rawCommand)
 		local oficialid = vRP.getUserIdentity(user_id)
 		if vehicle then
 			local puser_id = vRP.getUserByRegistration(placa)
-			local rows = vRP.query("creative/get_vehicles", { user_id = parseInt(puser_id), vehicle = vname })
+			local rows = vRP.query("vRP/get_vehicles", { user_id = parseInt(puser_id), vehicle = vname })
 			if rows[1] then
 				if parseInt(rows[1].detido) == 1 then
 					TriggerClientEvent("Notify", source, "importante", "Este veículo já se encontra detido.", 8000)
@@ -578,7 +578,7 @@ RegisterCommand('detido', function(source, args, rawCommand)
 					local identity = vRP.getUserIdentity(puser_id)
 					local nplayer = vRP.getUserSource(parseInt(puser_id))
 					if vRP.request(source, "Deseja apreender o veículo <b>" .. vRP.vehicleName(vname) .. "</b> do Passaporte: <b>" .. puser_id .. " " .. identity.name .. " " .. identity.firstname .. "</b> ?", 30) then
-						vRP.execute("creative/set_detido", { user_id = parseInt(puser_id), vehicle = vname, detido = 1, time = parseInt(os.time()) })
+						vRP.execute("vRP/set_detido", { user_id = parseInt(puser_id), vehicle = vname, detido = 1, time = parseInt(os.time()) })
 
 						randmoney = math.random(250, 300)
 						vRP.giveMoney(user_id, parseInt(randmoney))

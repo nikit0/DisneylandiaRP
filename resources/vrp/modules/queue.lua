@@ -1,5 +1,4 @@
 local Config = {}
-Config.RequireSteam = false
 Config.PriorityOnly = false
 
 Config.IsBanned = function(src, callback)
@@ -10,13 +9,12 @@ Config.Language = {
 	name = "YOUR SERVER NAME",
 	joining = "Entrando...",
 	connecting = "Conectando...",
-	err = "Não foi possível identificar sua Steam ou Social Club.",
+	err = "Não foi possível identificar sua Social Club.",
 	_err = "Você foi desconectado por demorar demais na fila.",
 	pos = "Você é o %d/%d da fila, aguarde sua conexão",
 	connectingerr = "Não foi possível adiciona-lo na fila.",
 	wlonly = "Você não está aprovado na whitelist.",
-	banned = "Seu passaporte foi revogado na cidade.",
-	steam = "Você precisa estar com a Steam aberta para conectar."
+	banned = "Seu passaporte foi revogado na cidade."
 }
 
 local Queue = {}
@@ -36,7 +34,6 @@ local tostring = tostring
 local tonumber = tonumber
 local ipairs = ipairs
 local pairs = pairs
-local string_sub = string.sub
 local string_format = string.format
 local string_lower = string.lower
 local math_abs = math.abs
@@ -44,24 +41,6 @@ local math_floor = math.floor
 local os_time = os.time
 local table_insert = table.insert
 local table_remove = table.remove
-
-function Queue:HexIdToSteamId(hexId)
-	local cid = math_floor(tonumber(string_sub(hexId, 7), 16))
-	local steam64 = math_floor(tonumber(string_sub(cid, 2)))
-	local a = steam64 % 2 == 0 and 0 or 1
-	local b = math_floor(math_abs(6561197960265728 - steam64 - a) / 2)
-	local sid = "steam_0:" .. a .. ":" .. (a == 1 and b - 1 or b)
-	return sid
-end
-
-function Queue:IsSteamRunning(src)
-	for k, v in ipairs(GetPlayerIdentifiers(src)) do
-		if string.sub(v, 1, 5) == "steam" then
-			return true
-		end
-	end
-	return false
-end
 
 function Queue:IsInQueue(ids, rtnTbl, bySource, connecting)
 	for genericKey1, genericValue1 in ipairs(connecting and self.Connecting or self.QueueList) do
@@ -95,7 +74,7 @@ local function getDBPriorities()
 	DBPriority = {}
 
 	for i = 1, #rows do
-		DBPriority[rows[i].steam] = rows[i].priority
+		DBPriority[rows[i].license] = rows[i].priority
 	end
 
 	return DBPriority
@@ -107,11 +86,8 @@ function Queue:IsPriority(ids)
 
 		DBPriority = getDBPriorities()
 
-		if string_sub(v, 1, 5) == "steam" and not DBPriority[v] then -- r stringsub
-			local steamid = self:HexIdToSteamId(v)
-			if DBPriority[steamid] then
-				return DBPriority[steamid] ~= nil and DBPriority[steamid] or false
-			end
+		if string.find(v, "license:") and not DBPriority[v] then
+			return DBPriority[v] ~= nil and DBPriority[v] or false
 		end
 
 		if DBPriority[v] then
@@ -377,12 +353,6 @@ CreateThread(function()
 
 		if not ids then
 			done(Config.Language.err)
-			CancelEvent()
-			return
-		end
-
-		if Config.RequireSteam and not Queue:IsSteamRunning(src) then
-			done(Config.Language.steam)
 			CancelEvent()
 			return
 		end

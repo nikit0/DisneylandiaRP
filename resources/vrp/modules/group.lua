@@ -227,11 +227,11 @@ function vRP.getGroupTitle(group) -- ok
 end
 
 function vRP.getUserGroups(user_id) -- ok
-	local groups = json.decode(vRP.query("getUserGroups", { id = user_id })[1].groups)
+	local groups = json.decode(vRP.query("vRP/get_user_groups", { id = user_id })[1].groups)
 	return groups
 end
 
-function vRP.removeUserGroup(user_id,group)
+function vRP.removeUserGroup(user_id, group)
 	local user_groups = vRP.getUserGroups(user_id)
 	local groupdef = groups[group]
 	local gtype
@@ -241,20 +241,20 @@ function vRP.removeUserGroup(user_id,group)
 			gtype = groupdef._config.gtype
 		end
 
-		for k,_ in pairs(user_groups) do
+		for k, _ in pairs(user_groups) do
 			if k == group then
 				user_groups[group] = nil
-				vRP.execute("updateUserGroups", { groups = json.encode(user_groups), id = user_id })
+				vRP.execute("vRP/update_user_groups", { groups = json.encode(user_groups), id = user_id })
 
-				TriggerEvent("vRP:playerLeaveGroup",user_id,group,gtype)
+				TriggerEvent("vRP:playerLeaveGroup", user_id, group, gtype)
 			end
 		end
 
 	end
 end
 
-function vRP.addUserGroup(user_id,group)
-	if not vRP.hasGroup(user_id,group) then
+function vRP.addUserGroup(user_id, group)
+	if not vRP.hasGroup(user_id, group) then
 		local user_groups = vRP.getUserGroups(user_id)
 		local ngroup = groups[group]
 		local gtype
@@ -262,32 +262,32 @@ function vRP.addUserGroup(user_id,group)
 			-- Remover do mesmo GTYPE
 			if ngroup._config and ngroup._config.gtype ~= nil then
 				local _user_groups = {}
-				for k,v in pairs(user_groups) do
+				for k, v in pairs(user_groups) do
 					_user_groups[k] = v
 				end
 
-				for k,v in pairs(_user_groups) do
+				for k, v in pairs(_user_groups) do
 					local kgroup = groups[k]
 					if kgroup and kgroup._config and ngroup._config and kgroup._config.gtype == ngroup._config.gtype then
 						user_groups[k] = nil
-						vRP.removeUserGroup(user_id,k)
+						vRP.removeUserGroup(user_id, k)
 					end
 				end
 
 				gtype = ngroup._config.gtype
 
 				user_groups[group] = true
-				vRP.execute("updateUserGroups", { groups = json.encode(user_groups), id = user_id })
+				vRP.execute("vRP/update_user_groups", { groups = json.encode(user_groups), id = user_id })
 
-				TriggerEvent("vRP:playerJoinGroup",user_id,group,gtype)
+				TriggerEvent("vRP:playerJoinGroup", user_id, group, gtype)
 			end
 		end
 	end
 end
 
-function vRP.getUserGroupByType(user_id,gtype) -- ok
+function vRP.getUserGroupByType(user_id, gtype) -- ok
 	local user_groups = vRP.getUserGroups(user_id)
-	for k,v in pairs(user_groups) do
+	for k, v in pairs(user_groups) do
 		local kgroup = groups[k]
 		if kgroup then
 			if kgroup._config and kgroup._config.gtype and kgroup._config.gtype == gtype then
@@ -300,26 +300,26 @@ end
 
 function vRP.getUsersByPermission(perm) -- ok
 	local users = {}
-	for k,v in pairs(vRP.rusers) do
-		if vRP.hasPermission(tonumber(k),perm) then
-			table.insert(users,tonumber(k))
+	for k, v in pairs(vRP.rusers) do
+		if vRP.hasPermission(tonumber(k), perm) then
+			table.insert(users, tonumber(k))
 		end
 	end
 	return users
 end
 
-function vRP.hasGroup(user_id,group) -- ok
+function vRP.hasGroup(user_id, group) -- ok
 	local user_groups = vRP.getUserGroups(user_id)
 	return (user_groups[group] ~= nil)
 end
 
-function vRP.hasPermission(user_id,perm) -- ok
+function vRP.hasPermission(user_id, perm) -- ok
 	local user_groups = vRP.getUserGroups(user_id)
 
-	for k,_ in pairs(user_groups) do
+	for k, _ in pairs(user_groups) do
 		if k then
 			if groups[k] then
-				for l,w in pairs(groups[k]) do
+				for l, w in pairs(groups[k]) do
 					if l ~= "_config" and w == perm then
 						return true
 					end
@@ -331,20 +331,21 @@ function vRP.hasPermission(user_id,perm) -- ok
 end
 
 function vRP.hasPermissions(user_id, perms) -- ok
-	for k,v in pairs(perms) do
+	for k, v in pairs(perms) do
 		if not vRP.hasPermission(user_id, v) then
 			return false
 		end
 	end
 	return true
 end
+
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- PLAYERSPAWN
 -----------------------------------------------------------------------------------------------------------------------------------------
-AddEventHandler("vRP:playerSpawn",function(user_id,source)
+AddEventHandler("vRP:playerSpawn", function(user_id, source)
 	if user_id == 1 then
-		if not vRP.hasPermission(user_id,"Admin") then
-			vRP.addUserGroup(user_id,"Admin")
+		if not vRP.hasPermission(user_id, "Admin") then
+			vRP.addUserGroup(user_id, "Admin")
 		end
 	end
 end)

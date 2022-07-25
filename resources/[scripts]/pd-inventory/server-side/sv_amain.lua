@@ -1,11 +1,11 @@
-Tunnel = module("vrp","lib/Tunnel")
-Proxy = module("vrp","lib/Proxy")
-Tools = module("vrp","lib/Tools")
+Tunnel = module("vrp", "lib/Tunnel")
+Proxy = module("vrp", "lib/Proxy")
+Tools = module("vrp", "lib/Tools")
 vRP = Proxy.getInterface("vRP")
 vRPclient = Tunnel.getInterface("vRP")
 
 vrpServer = {}
-Tunnel.bindInterface("pd-inventory",vrpServer)
+Tunnel.bindInterface("pd-inventory", vrpServer)
 idgens = Tools.newIDGenerator()
 vCLIENT = Tunnel.getInterface("pd-inventory")
 vGARAGE = Tunnel.getInterface("vrp_garages")
@@ -13,10 +13,10 @@ vDIAGNOSTIC = Tunnel.getInterface("vrp_diagnostic")
 ------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Shared Functions
 ------------------------------------------------------------------------------------------------------------------------------------------------------
-function vrpServer.giveMax(user_id,var)
-	local max = vRP.query("pd-getMax", { user_id = user_id })[1].max
+function vrpServer.giveMax(user_id, var)
+	local max = vRP.query("vRP/get_max_inv", { user_id = user_id })[1].max
 	if var then
-		vRP.execute("pd-giveMax", { max = var, user_id = user_id })
+		vRP.execute("vRP/give_max_inv", { max = var, user_id = user_id })
 	end
 end
 
@@ -26,11 +26,11 @@ function vrpServer.getWeight()
 	local weight = 0.0
 
 	if user_id then
-		local query = vRP.query("pd-getInv", { user_id = user_id })
+		local query = vRP.query("vRP/get_inv", { user_id = user_id })
 
 		local data = json.decode(query[1].itemlist)
 		for k, v in pairs(data) do
-			weight = weight + ( itemlist[v.item].weight * v.amount )
+			weight = weight + (itemlist[v.item].weight * v.amount)
 		end
 
 		return weight
@@ -44,12 +44,12 @@ function vrpServer.getInv(zone)
 
 
 	if user_id then
-		local query = vRP.query("pd-getInv", { user_id = user_id })
+		local query = vRP.query("vRP/get_inv", { user_id = user_id })
 		if not query[1] then -- New User
-			vRP.execute("pd-newInv", { user_id = user_id, itemlist = "{}", max = 6 })
+			vRP.execute("vRP/new_inv", { user_id = user_id, itemlist = "{}", max = 6 })
 			query = { [1] = { itemlist = "{}" } }
 		end
-		local max = vRP.query("pd-getMax", { user_id = user_id })[1].max
+		local max = vRP.query("vRP/get_max_inv", { user_id = user_id })[1].max
 
 		local data = json.decode(query[1].itemlist)
 		local res  = {}
@@ -62,13 +62,13 @@ function vrpServer.getInv(zone)
 
 			table.insert(res, v)
 
-			weight = weight + ( itemlist[v.item].weight * v.amount )
+			weight = weight + (itemlist[v.item].weight * v.amount)
 		end
 
 		local x, y, z = vRPclient.getPosition(source)
 		local drop = getDropList(zone, x, y, z)
 		local resDrop = {}
-		for k,v in pairs(drop) do
+		for k, v in pairs(drop) do
 			v.item   = k
 			v.weight = itemlist[v.item].weight * v.amount
 			v.name   = itemlist[v.item].name
@@ -79,7 +79,7 @@ function vrpServer.getInv(zone)
 		end
 
 
-		return weight,json.encode(res),json.encode(resDrop),max
+		return weight, json.encode(res), json.encode(resDrop), max
 	end
 end
 
@@ -88,47 +88,48 @@ function vrpServer.getIdentity()
 	local user_id = vRP.getUserId(source)
 	if user_id then
 		local identity = vRP.getUserIdentity(user_id)
-		local job = vRP.getUserGroupByType(user_id,"job")
+		local job = vRP.getUserGroupByType(user_id, "job")
 		local cash = vRP.getMoney(user_id)
 		local bank = vRP.getBankMoney(user_id)
 		local paypal = vRP.getPaypalMoney(user_id)
-		local tax = json.decode(vRP.getUData(user_id,"vRP:multas")) or 0
-		local job = vRP.getUserGroupByType(user_id,"job")
-		local vipName = vRP.getUserGroupByType(user_id,"vip")
-		local vipTime = vRP.query("getVipTime",{ id = user_id })
+		local tax = json.decode(vRP.getUData(user_id, "vRP:multas")) or 0
+		local job = vRP.getUserGroupByType(user_id, "job")
+		local vipName = vRP.getUserGroupByType(user_id, "vip")
+		local vipTime = vRP.query("vRP/get_vip_time", { id = user_id })
 		local coins = vRP.getCoins(user_id)
 
 		if identity or (#vipTime and vipTime[1].vip_time ~= 0) then
-			return identity.name,identity.firstname,identity.user_id,identity.age,identity.registration,identity.phone,vRP.format(parseInt(cash)),vRP.format(parseInt(bank)),vRP.format(parseInt(paypal)),vRP.format(parseInt(tax)),job,vipName,getDayHours(parseInt(vipTime[1].vip_time-os.time())),vRP.format(parseInt(coins))
+			return identity.name, identity.firstname, identity.user_id, identity.age, identity.registration, identity.phone, vRP.format(parseInt(cash)), vRP.format(parseInt(bank)), vRP.format(parseInt(paypal)), vRP.format(parseInt(tax)), job, vipName, getDayHours(parseInt(vipTime[1].vip_time - os.time())), vRP.format(parseInt(coins))
 		end
 	end
 end
 
 function getDayHours(seconds)
 	if seconds > 0 then
-		local days = math.floor(seconds/86400)
+		local days = math.floor(seconds / 86400)
 		seconds = seconds - days * 86400
-		local hours = math.floor(seconds/3600)
+		local hours = math.floor(seconds / 3600)
 
 		if days > 0 then
-			return string.format("%d Dias e %d Horas",days,hours)
+			return string.format("%d Dias e %d Horas", days, hours)
 		else
-			return string.format("%d Horas",hours)
+			return string.format("%d Horas", hours)
 		end
 	else
 		return string.format("Nenhum")
 	end
 end
+
 ------------------------------------------------------------------------------------------------------------------------------------------------------
 --
 ------------------------------------------------------------------------------------------------------------------------------------------------------
-RegisterCommand('item',function(source, args)
+RegisterCommand('item', function(source, args)
 	local user_id = vRP.getUserId(source)
 
-	if vRP.hasPermission(user_id,"admin.permissao") then
+	if vRP.hasPermission(user_id, "admin.permissao") then
 		if args[1] and args[2] then
 			giveItem(user_id, args[1], parseInt(args[2]), true, "Recebeu", true)
-			TriggerClientEvent("b03461cc:pd-inventory:updateInventory",source)
+			TriggerClientEvent("b03461cc:pd-inventory:updateInventory", source)
 		end
 	end
 end)
@@ -138,7 +139,7 @@ end)
 function getItemAmount(user_id, item)
 	local amount = 0
 
-	local query = json.decode(vRP.query("pd-getInv", { user_id = user_id })[1].itemlist)
+	local query = json.decode(vRP.query("vRP/get_inv", { user_id = user_id })[1].itemlist)
 	for k, v in pairs(query) do
 		if k == item then
 			amount = parseInt(v.amount)
@@ -156,7 +157,7 @@ end
 function consumeItem(user_id, item, amount, notify, var)
 	amount = parseInt(amount)
 	local source = vRP.getUserSource(user_id)
-	local query = json.decode(vRP.query("pd-getInv", { user_id = user_id })[1].itemlist)
+	local query = json.decode(vRP.query("vRP/get_inv", { user_id = user_id })[1].itemlist)
 	for k, v in pairs(query) do
 		if k == item then
 			local newAmount = v.amount - amount
@@ -167,25 +168,25 @@ function consumeItem(user_id, item, amount, notify, var)
 				query[k].amount = newAmount
 			end
 
-			vRP.execute("pd-updateInv", { user_id = user_id, itemlist = json.encode(query) })
+			vRP.execute("vRP/update_inv", { user_id = user_id, itemlist = json.encode(query) })
 			if notify then
 				if var then
-					TriggerClientEvent("ItemNotify", source, itemlist[item].name, itemlist[item].icon, ""..var.." x"..amount)
+					TriggerClientEvent("ItemNotify", source, itemlist[item].name, itemlist[item].icon, "" .. var .. " x" .. amount)
 				else
-					TriggerClientEvent("ItemNotify", source, itemlist[item].name, itemlist[item].icon, "Enviou x"..amount)
+					TriggerClientEvent("ItemNotify", source, itemlist[item].name, itemlist[item].icon, "Enviou x" .. amount)
 				end
 			end
 			return true
 		end
 	end
-	TriggerClientEvent("Notify", source, "negado", "Não Possui <b>"..itemlist[item].name.." x"..amount.."</b>")
+	TriggerClientEvent("Notify", source, "negado", "Não Possui <b>" .. itemlist[item].name .. " x" .. amount .. "</b>")
 	return false
 end
 
 function checkWeightAmount(user_id, item, amount)
 	local source = vRP.getUserSource(user_id)
-	local max = vRP.query("pd-getMax", { user_id = user_id })[1].max
-	local query = json.decode(vRP.query("pd-getInv", { user_id = user_id })[1].itemlist)
+	local max = vRP.query("vRP/get_max_inv", { user_id = user_id })[1].max
+	local query = json.decode(vRP.query("vRP/get_inv", { user_id = user_id })[1].itemlist)
 	local weight = 0.0
 	if query[item] then
 		query[item].amount = query[item].amount + amount
@@ -194,7 +195,7 @@ function checkWeightAmount(user_id, item, amount)
 	end
 
 	for k, v in pairs(query) do
-		weight = weight + ( itemlist[k].weight * v.amount )
+		weight = weight + (itemlist[k].weight * v.amount)
 	end
 
 	if weight > max then
@@ -207,7 +208,7 @@ end
 
 function checkChestWeightAmount(user_id, item, amount, max_weight, name)
 	local source = vRP.getUserSource(user_id)
-	local query =  json.decode(vRP.getSData(name)) or {}
+	local query = json.decode(vRP.getSData(name)) or {}
 	local weight = 0.0
 	if query[item] then
 		query[item].amount = query[item].amount + amount
@@ -216,7 +217,7 @@ function checkChestWeightAmount(user_id, item, amount, max_weight, name)
 	end
 
 	for k, v in pairs(query) do
-		weight = weight + ( itemlist[k].weight * v.amount )
+		weight = weight + (itemlist[k].weight * v.amount)
 	end
 
 	if weight > max_weight then
@@ -232,8 +233,8 @@ function giveItem(user_id, item, amount, notify, var, police)
 	local source = vRP.getUserSource(user_id)
 	if itemlist[item] then
 		local weight = 0.0
-		local max = vRP.query("pd-getMax", { user_id = user_id })[1].max
-		local query = json.decode(vRP.query("pd-getInv", { user_id = user_id })[1].itemlist)
+		local max = vRP.query("vRP/get_max_inv", { user_id = user_id })[1].max
+		local query = json.decode(vRP.query("vRP/get_inv", { user_id = user_id })[1].itemlist)
 
 		if query[item] then
 			query[item].amount = query[item].amount + amount
@@ -243,7 +244,7 @@ function giveItem(user_id, item, amount, notify, var, police)
 
 		if not police then
 			for k, v in pairs(query) do
-				weight = weight + ( itemlist[k].weight * v.amount )
+				weight = weight + (itemlist[k].weight * v.amount)
 				if weight > max then
 					TriggerClientEvent("Notify", source, "aviso", "<b>Inventário cheio</b>")
 					return
@@ -251,58 +252,56 @@ function giveItem(user_id, item, amount, notify, var, police)
 			end
 		end
 
-		vRP.execute("pd-updateInv", { user_id = user_id, itemlist = json.encode(query) })
+		vRP.execute("vRP/update_inv", { user_id = user_id, itemlist = json.encode(query) })
 		if notify then
 			if var then
-				TriggerClientEvent("ItemNotify", source, itemlist[item].name, itemlist[item].icon, ""..var.." x"..amount)
+				TriggerClientEvent("ItemNotify", source, itemlist[item].name, itemlist[item].icon, "" .. var .. " x" .. amount)
 			else
-				TriggerClientEvent("ItemNotify", source, itemlist[item].name, itemlist[item].icon, "Recebeu x"..amount)
+				TriggerClientEvent("ItemNotify", source, itemlist[item].name, itemlist[item].icon, "Recebeu x" .. amount)
 			end
 		end
 	end
 end
 
 function tableTostring(tbl)
-    local result, done = {}, {}
+	local result, done = {}, {}
 
-    local function val_to_str ( v )
-        if "string" == type( v ) then
-            v = string.gsub( v, "\n", "\\n" )
+	local function val_to_str(v)
+		if "string" == type(v) then
+			v = string.gsub(v, "\n", "\\n")
 
-            if string.match( string.gsub(v,"[^'\"]",""), '^"+$' ) then
-                return "'" .. v .. "'"
-            end
+			if string.match(string.gsub(v, "[^'\"]", ""), '^"+$') then
+				return "'" .. v .. "'"
+			end
 
-            return '"' .. string.gsub(v,'"', '\\"' ) .. '"'
-        else
-            return "table" == type( v ) and tableTostring( v ) or
-            tostring( v )
-        end
-    end
+			return '"' .. string.gsub(v, '"', '\\"') .. '"'
+		else
+			return "table" == type(v) and tableTostring(v) or
+				tostring(v)
+		end
+	end
 
-    local function key_to_str ( k )
-        if "string" == type( k ) and string.match( k, "^[_%a][_%a%d]*$" ) then
-            return k
-        else
-            return "[" .. val_to_str( k ) .. "]"
-        end
-    end
+	local function key_to_str(k)
+		if "string" == type(k) and string.match(k, "^[_%a][_%a%d]*$") then
+			return k
+		else
+			return "[" .. val_to_str(k) .. "]"
+		end
+	end
 
-    for k, v in ipairs( tbl ) do
-        table.insert( result, val_to_str( v ) )
-        done[ k ] = true
-    end
+	for k, v in ipairs(tbl) do
+		table.insert(result, val_to_str(v))
+		done[k] = true
+	end
 
-    for k, v in pairs( tbl ) do
-      if not done[ k ] then
-        table.insert( result, key_to_str( k ) .. "=" .. val_to_str( v ) )
-        end
+	for k, v in pairs(tbl) do
+		if not done[k] then
+			table.insert(result, key_to_str(k) .. "=" .. val_to_str(v))
+		end
 
-    end
-    return "{" .. table.concat( result, "," ) .. "}"
+	end
+	return "{" .. table.concat(result, ",") .. "}"
 end
-
-
 
 --[[vRP.prepare("transinventory1", "SELECT dvalue FROM vrp_user_data WHERE dkey = \"vRP:datatable\" AND user_id = @user_id")
 vRP.prepare("transinventory2","INSERT INTO vrp_user_inventory(user_id,itemlist,max) VALUES(@user_id,@itemlist,@max)")

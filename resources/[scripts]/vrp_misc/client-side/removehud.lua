@@ -1,5 +1,5 @@
 CreateThread(function()
-	AddTextEntry("FE_THDR_GTAO", "~g~DL GAMES RP ~r~v2.0 ~w~| ~q~DISCORD.GG/GkqtTHe")
+	AddTextEntry("FE_THDR_GTAO", "~g~YOUR SERVER NAME ~r~v1.0 ~w~| ~q~DISCORD.GG/SERVER")
 	StartAudioScene("CHARACTER_CHANGE_IN_SKY_SCENE")
 	while true do
 		N_0xf4f2c0d4ee209e20()

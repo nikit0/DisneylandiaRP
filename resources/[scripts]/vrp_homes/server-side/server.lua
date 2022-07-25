@@ -557,7 +557,7 @@ CreateThread(function()
 	while true do
 		blipHomes = {}
 		for k, v in pairs(homes) do
-			local checkHomes = vRP.query("homes/get_homeuseridowner", { home = tostring(k) })
+			local checkHomes = vRP.query("vRP/get_homeuseridowner", { home = tostring(k) })
 			if checkHomes[1] == nil then
 				table.insert(blipHomes, { name = tostring(k) })
 				Wait(10)
@@ -574,15 +574,15 @@ RegisterCommand('homes', function(source, args, rawCommand)
 	local user_id = vRP.getUserId(source)
 	if user_id then
 		if args[1] == "add" and homes[tostring(args[2])] then
-			local myHomes = vRP.query("homes/get_homeuserowner", { user_id = parseInt(user_id), home = tostring(args[2]) })
+			local myHomes = vRP.query("vRP/get_homeuserowner", { user_id = parseInt(user_id), home = tostring(args[2]) })
 			if myHomes[1] then
-				local totalResidents = vRP.query("homes/count_homepermissions", { home = tostring(args[2]) })
+				local totalResidents = vRP.query("vRP/count_homepermissions", { home = tostring(args[2]) })
 				if parseInt(totalResidents[1].qtd) >= parseInt(homes[tostring(args[2])][2]) then
 					TriggerClientEvent("Notify", source, "negado", "A residência " .. tostring(args[2]) .. " atingiu o máximo de moradores.", 10000)
 					return
 				end
 
-				vRP.execute("homes/add_permissions", { home = tostring(args[2]), user_id = parseInt(args[3]) })
+				vRP.execute("vRP/add_permissions", { home = tostring(args[2]), user_id = parseInt(args[3]) })
 				local identity = vRP.getUserIdentity(parseInt(args[3]))
 				local nplayer = vRP.getUserSource(parseInt(args[3]))
 				if identity and nplayer then
@@ -591,11 +591,11 @@ RegisterCommand('homes', function(source, args, rawCommand)
 				end
 			end
 		elseif args[1] == "rem" and homes[tostring(args[2])] then
-			local myHomes = vRP.query("homes/get_homeuserowner", { user_id = parseInt(user_id), home = tostring(args[2]) })
+			local myHomes = vRP.query("vRP/get_homeuserowner", { user_id = parseInt(user_id), home = tostring(args[2]) })
 			if myHomes[1] then
-				local userHomes = vRP.query("homes/get_homeuser", { user_id = parseInt(args[3]), home = tostring(args[2]) })
+				local userHomes = vRP.query("vRP/get_homeuser", { user_id = parseInt(args[3]), home = tostring(args[2]) })
 				if userHomes[1] then
-					vRP.execute("homes/rem_permissions", { home = tostring(args[2]), user_id = parseInt(args[3]) })
+					vRP.execute("vRP/rem_permissions", { home = tostring(args[2]), user_id = parseInt(args[3]) })
 					local identity = vRP.getUserIdentity(parseInt(args[3]))
 					local nplayer = vRP.getUserSource(parseInt(args[3]))
 					if identity and nplayer then
@@ -605,12 +605,12 @@ RegisterCommand('homes', function(source, args, rawCommand)
 				end
 			end
 		elseif args[1] == "garage" and homes[tostring(args[2])] then
-			local myHomes = vRP.query("homes/get_homeuserowner", { user_id = parseInt(user_id), home = tostring(args[2]) })
+			local myHomes = vRP.query("vRP/get_homeuserowner", { user_id = parseInt(user_id), home = tostring(args[2]) })
 			if myHomes[1] then
-				local userHomes = vRP.query("homes/get_homeuser", { user_id = parseInt(args[3]), home = tostring(args[2]) })
+				local userHomes = vRP.query("vRP/get_homeuser", { user_id = parseInt(args[3]), home = tostring(args[2]) })
 				if userHomes[1] then
 					if vRP.tryFullPayment(user_id, 50000) then
-						vRP.execute("homes/upd_permissions", { home = tostring(args[2]), user_id = parseInt(args[3]) })
+						vRP.execute("vRP/upd_permissions", { home = tostring(args[2]), user_id = parseInt(args[3]) })
 						local identity = vRP.getUserIdentity(parseInt(args[3]))
 						local nplayer = vRP.getUserSource(parseInt(args[3]))
 						if identity and nplayer then
@@ -625,9 +625,9 @@ RegisterCommand('homes', function(source, args, rawCommand)
 		elseif args[1] == "list" then
 			vCLIENT.setBlipsHomes(source, blipHomes)
 		elseif args[1] == "check" and homes[tostring(args[2])] then
-			local myHomes = vRP.query("homes/get_homeuserowner", { user_id = parseInt(user_id), home = tostring(args[2]) })
+			local myHomes = vRP.query("vRP/get_homeuserowner", { user_id = parseInt(user_id), home = tostring(args[2]) })
 			if myHomes[1] then
-				local userHomes = vRP.query("homes/get_homepermissions", { home = tostring(args[2]) })
+				local userHomes = vRP.query("vRP/get_homepermissions", { home = tostring(args[2]) })
 				if parseInt(#userHomes) > 1 then
 					local permissoes = ""
 					for k, v in pairs(userHomes) do
@@ -650,26 +650,26 @@ RegisterCommand('homes', function(source, args, rawCommand)
 				TriggerClientEvent("Notify", source, "negado", "<b>" .. args[2] .. "</b> não pode ser transferida por ser uma residência <b>VIP</b>.", 10000)
 				return
 			end
-			local myHomes = vRP.query("homes/get_homeuserowner", { user_id = parseInt(user_id), home = tostring(args[2]) })
+			local myHomes = vRP.query("vRP/get_homeuserowner", { user_id = parseInt(user_id), home = tostring(args[2]) })
 			if myHomes[1] then
 				local identity = vRP.getUserIdentity(parseInt(args[3]))
 				local nplayer = vRP.getUserSource(parseInt(args[3]))
 				if identity and nplayer then
 					local ok = vRP.request(source, "Deseja transferir a residência <b>" .. tostring(args[2]) .. "</b> para <b>" .. identity.name .. " " .. identity.firstname .. "</b> ?", 30)
 					if ok then
-						vRP.execute("homes/rem_allpermissions", { home = tostring(args[2]) })
-						vRP.execute("homes/buy_permissions", { home = tostring(args[2]), user_id = parseInt(args[3]), tax = parseInt(myHomes[1].tax) })
+						vRP.execute("vRP/rem_allpermissions", { home = tostring(args[2]) })
+						vRP.execute("vRP/buy_permissions", { home = tostring(args[2]), user_id = parseInt(args[3]), tax = parseInt(myHomes[1].tax) })
 						TriggerClientEvent("Notify", source, "importante", "Você transferiu a residência <b>" .. tostring(args[2]) .. "</b> para <b>" .. identity.name .. " " .. identity.firstname .. "</b>.", 10000)
 						TriggerClientEvent("Notify", nplayer, "importante", "Você recebeu a transferência da residência <b>" .. tostring(args[2]) .. "</b>.", 10000)
 					end
 				end
 			end
 		elseif args[1] == "tax" and homes[tostring(args[2])] then
-			local ownerHomes = vRP.query("homes/get_homeuseridowner", { home = tostring(args[2]) })
+			local ownerHomes = vRP.query("vRP/get_homeuseridowner", { home = tostring(args[2]) })
 			if ownerHomes[1] then
 				if vRP.tryFullPayment(user_id, parseInt(homes[tostring(args[2])][1] * 0.1)) then
-					vRP.execute("homes/rem_permissions", { home = tostring(args[2]), user_id = parseInt(ownerHomes[1].user_id) })
-					vRP.execute("homes/buy_permissions", { home = tostring(args[2]), user_id = parseInt(ownerHomes[1].user_id), tax = parseInt(os.time()) })
+					vRP.execute("vRP/rem_permissions", { home = tostring(args[2]), user_id = parseInt(ownerHomes[1].user_id) })
+					vRP.execute("vRP/buy_permissions", { home = tostring(args[2]), user_id = parseInt(ownerHomes[1].user_id), tax = parseInt(os.time()) })
 					TriggerClientEvent("Notify", source, "sucesso", "Pagamento de <b>$" .. vRP.format(parseInt(homes[tostring(args[2])][1] * 0.1)) .. " dólares</b> efetuado com sucesso.", 10000)
 				else
 					TriggerClientEvent("Notify", source, "negado", "Dinheiro insuficiente.", 10000)
@@ -680,36 +680,36 @@ RegisterCommand('homes', function(source, args, rawCommand)
 				TriggerClientEvent("Notify", source, "negado", "<b>" .. args[2] .. "</b> não pode ser vendida por ser uma residência <b>VIP</b>.", 10000)
 				return
 			end
-			local myHomes = vRP.query("homes/get_homeuserowner", { user_id = parseInt(user_id), home = tostring(args[2]) })
+			local myHomes = vRP.query("vRP/get_homeuserowner", { user_id = parseInt(user_id), home = tostring(args[2]) })
 			if myHomes[1] then
 				local ok = vRP.request(source, "Deseja vender a residência <b>" .. tostring(args[2]) .. "</b> por <b>$" .. vRP.format(parseInt(homes[tostring(args[2])][1] * 0.5)) .. " dólares</b> ?", 30)
 				if ok then
 					local chest = vRP.getSData("chest:" .. tostring(args[2]))
 					local chest2 = json.decode(chest) or {}
 					if chest2 then
-						vRP.execute("creative/rem_srv_data", { dkey = "chest:" .. tostring(args[2]) })
+						vRP.execute("vRP/rem_veh_srv_data", { dkey = "chest:" .. tostring(args[2]) })
 					end
 
 					local outfit = vRP.getSData("outfit:" .. tostring(args[2]))
 					local outfit2 = json.decode(outfit) or {}
 					if outfit2 then
-						vRP.execute("creative/rem_srv_data", { dkey = "outfit:" .. tostring(args[2]) })
+						vRP.execute("vRP/rem_veh_srv_data", { dkey = "outfit:" .. tostring(args[2]) })
 					end
-					vRP.execute("homes/rem_allpermissions", { home = tostring(args[2]) })
+					vRP.execute("vRP/rem_allpermissions", { home = tostring(args[2]) })
 
 					vRP.giveBankMoney(user_id, parseInt(homes[tostring(args[2])][1] * 0.5))
 					TriggerClientEvent("Notify", source, "sucesso", "Você vendeu a residência <b>" .. tostring(args[2]) .. "</b> por <b>$" .. vRP.format(parseInt(homes[tostring(args[2])][1] * 0.5)) .. " dólares</b>.", 10000)
 				end
 			end
 		else
-			local myHomes = vRP.query("homes/get_homeuserid", { user_id = parseInt(user_id) })
+			local myHomes = vRP.query("vRP/get_homeuserid", { user_id = parseInt(user_id) })
 			if parseInt(#myHomes) >= 1 then
 				for k, v in pairs(myHomes) do
-					local ownerHomes = vRP.query("homes/get_homeuseridowner", { home = tostring(v.home) })
+					local ownerHomes = vRP.query("vRP/get_homeuseridowner", { home = tostring(v.home) })
 					if ownerHomes[1] then
 						if vRP.hasPermission(user_id, "platina.permissao") and (string.find(v.home, "FH") or string.find(v.home, "LX") or string.find(v.home, "MS") or string.find(v.home, "SS")) then
 							TriggerClientEvent("Notify", source, "importante", "<b>Residência:</b> " .. v.home .. "<br><b>Property Tax:</b> Quitado", 20000)
-							vRP.execute("homes/upd_taxhomes", { tax = parseInt(os.time()), user_id = parseInt(ownerHomes[1].user_id), home = tostring(v.home), owner = 1 })
+							vRP.execute("vRP/upd_taxhomes", { tax = parseInt(os.time()), user_id = parseInt(ownerHomes[1].user_id), home = tostring(v.home), owner = 1 })
 						else
 							if parseInt(os.time()) >= parseInt(ownerHomes[1].tax + 24 * 15 * 60 * 60) then
 								TriggerClientEvent("Notify", source, "negado", "<b>Residência:</b> " .. v.home .. "<br><b>Property Tax:</b> Atrasado", 20000)
@@ -731,7 +731,7 @@ AddEventHandler("vRP:playerSpawn", function(user_id, source, first_spawn)
 	local source = source
 	local user_id = vRP.getUserId(source)
 	if user_id then
-		local myHomes = vRP.query("homes/get_homeuserid", { user_id = parseInt(user_id) })
+		local myHomes = vRP.query("vRP/get_homeuserid", { user_id = parseInt(user_id) })
 		if parseInt(#myHomes) >= 1 then
 			for k, v in pairs(myHomes) do
 				vCLIENT.setBlipsOwner(source, v.home)
@@ -767,14 +767,14 @@ function src.checkPermissions(homeName)
 		local identity = vRP.getUserIdentity(user_id)
 		if identity then
 			if not vRP.searchReturn(source, user_id) then
-				local homeResult = vRP.query("homes/get_homepermissions", { home = tostring(homeName) })
+				local homeResult = vRP.query("vRP/get_homepermissions", { home = tostring(homeName) })
 				if parseInt(#homeResult) >= 1 then
-					local myResult = vRP.query("homes/get_homeuser", { user_id = parseInt(user_id), home = tostring(homeName) })
-					local resultOwner = vRP.query("homes/get_homeuseridowner", { home = tostring(homeName) })
+					local myResult = vRP.query("vRP/get_homeuser", { user_id = parseInt(user_id), home = tostring(homeName) })
+					local resultOwner = vRP.query("vRP/get_homeuseridowner", { home = tostring(homeName) })
 					if myResult[1] then
 
 						if vRP.hasPermission(user_id, "platina.permissao") and (string.find(homeName, "FH") or string.find(homeName, "LX") or string.find(homeName, "MS") or string.find(homeName, "SS")) then
-							vRP.execute("homes/upd_taxhomes", { tax = parseInt(os.time()), user_id = parseInt(resultOwner[1].user_id), home = tostring(homeName), owner = 1 })
+							vRP.execute("vRP/upd_taxhomes", { tax = parseInt(os.time()), user_id = parseInt(resultOwner[1].user_id), home = tostring(homeName), owner = 1 })
 							return true
 						end
 
@@ -783,16 +783,16 @@ function src.checkPermissions(homeName)
 							local chest = vRP.getSData("chest:" .. tostring(homeName))
 							local chest2 = json.decode(chest) or {}
 							if chest2 then
-								vRP.execute("creative/rem_srv_data", { dkey = "chest:" .. tostring(homeName) })
+								vRP.execute("vRP/rem_veh_srv_data", { dkey = "chest:" .. tostring(homeName) })
 							end
 
 							local outfit = vRP.getSData("outfit:" .. tostring(homeName))
 							local outfit2 = json.decode(outfit) or {}
 							if outfit2 then
-								vRP.execute("creative/rem_srv_data", { dkey = "outfit:" .. tostring(homeName) })
+								vRP.execute("vRP/rem_veh_srv_data", { dkey = "outfit:" .. tostring(homeName) })
 							end
 
-							vRP.execute("homes/rem_allpermissions", { home = tostring(homeName) })
+							vRP.execute("vRP/rem_allpermissions", { home = tostring(homeName) })
 							TriggerClientEvent("Notify", source, "aviso", "A <b>Property Tax</b> venceu por <b>3 dias</b> e a casa foi vendida.", 10000)
 							return false
 						elseif parseInt(os.time()) <= parseInt(resultOwner[1].tax + 24 * 15 * 60 * 60) then
@@ -807,16 +807,16 @@ function src.checkPermissions(homeName)
 							local chest = vRP.getSData("chest:" .. tostring(homeName))
 							local chest2 = json.decode(chest) or {}
 							if chest2 then
-								vRP.execute("creative/rem_srv_data", { dkey = "chest:" .. tostring(homeName) })
+								vRP.execute("vRP/rem_veh_srv_data", { dkey = "chest:" .. tostring(homeName) })
 							end
 
 							local outfit = vRP.getSData("outfit:" .. tostring(homeName))
 							local outfit2 = json.decode(outfit) or {}
 							if outfit2 then
-								vRP.execute("creative/rem_srv_data", { dkey = "outfit:" .. tostring(homeName) })
+								vRP.execute("vRP/rem_veh_srv_data", { dkey = "outfit:" .. tostring(homeName) })
 							end
 
-							vRP.execute("homes/rem_allpermissions", { home = tostring(homeName) })
+							vRP.execute("vRP/rem_allpermissions", { home = tostring(homeName) })
 							return false
 						end
 
@@ -848,7 +848,7 @@ function src.checkPermissions(homeName)
 					local ok = vRP.request(source, "Deseja efetuar a compra da residência <b>" .. tostring(homeName) .. "</b> por <b>$" .. vRP.format(parseInt(homes[tostring(homeName)][1])) .. "</b> ?", 30)
 					if ok then
 						if vRP.tryFullPayment(user_id, parseInt(homes[tostring(homeName)][1])) then
-							vRP.execute("homes/buy_permissions", { home = tostring(homeName), user_id = parseInt(user_id), tax = parseInt(os.time()) })
+							vRP.execute("vRP/buy_permissions", { home = tostring(homeName), user_id = parseInt(user_id), tax = parseInt(os.time()) })
 							TriggerClientEvent("Notify", source, "sucesso", "A residência <b>" .. tostring(homeName) .. "</b> foi comprada com sucesso.", 10000)
 						else
 							TriggerClientEvent("Notify", source, "negado", "Dinheiro insuficiente.", 10000)
@@ -870,7 +870,7 @@ function src.checkIntPermissions(homeName)
 	local user_id = vRP.getUserId(source)
 	if user_id then
 		if not vRP.searchReturn(source, user_id) then
-			local myResult = vRP.query("homes/get_homeuser", { user_id = parseInt(user_id), home = tostring(homeName) })
+			local myResult = vRP.query("vRP/get_homeuser", { user_id = parseInt(user_id), home = tostring(homeName) })
 			if myResult[1] or vRP.hasPermission(user_id, "policia.permissao") then
 				return true
 			end
@@ -887,7 +887,7 @@ RegisterCommand('outfit', function(source, args, rawCommand)
 	local user_id = vRP.getUserId(source)
 	if user_id then
 		local homeName = vCLIENT.getHomeStatistics(source)
-		local myResult = vRP.query("homes/get_homeuser", { user_id = parseInt(user_id), home = tostring(homeName) })
+		local myResult = vRP.query("vRP/get_homeuser", { user_id = parseInt(user_id), home = tostring(homeName) })
 		if myResult[1] then
 			local data = vRP.getSData("outfit:" .. tostring(homeName))
 			local result = json.decode(data) or {}

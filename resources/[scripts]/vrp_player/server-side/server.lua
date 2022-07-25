@@ -469,7 +469,7 @@ RegisterCommand('roubar', function(source, args, rawCommand)
 							exports["pd-inventory"]:giveItem(nuser_id, ammo, v.ammo, true)
 						end
 					end
-					local query = vRP.query("pd-getInv", { user_id = nuser_id })
+					local query = vRP.query("vRP/get_inv", { user_id = nuser_id })
 					local ndata = json.decode(query[1].itemlist)
 					if ndata ~= nil then
 						for k, v in pairs(ndata) do
@@ -506,7 +506,7 @@ RegisterCommand('roubar', function(source, args, rawCommand)
 								exports["pd-inventory"]:giveItem(nuser_id, ammo, v.ammo, true)
 							end
 						end
-						local query = vRP.query("pd-getInv", { user_id = nuser_id })
+						local query = vRP.query("vRP/get_inv", { user_id = nuser_id })
 						local ndata = json.decode(query[1].itemlist)
 						if ndata ~= nil then
 							for k, v in pairs(ndata) do

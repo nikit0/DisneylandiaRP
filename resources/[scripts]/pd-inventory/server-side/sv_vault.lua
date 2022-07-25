@@ -8,12 +8,12 @@ function vrpServer.loadVault(vaultName)
 	local data = {}
 
 	vaults[tostring(vaultName)] = true
-    userVaults[user_id] = tostring(vaultName)
-	vaultName = "chest:"..tostring(vaultName)
+	userVaults[user_id] = tostring(vaultName)
+	vaultName = "chest:" .. tostring(vaultName)
 
-	for k,v in pairs(openVaults) do
+	for k, v in pairs(openVaults) do
 		if k ~= user_id and v == vaultName then
-			TriggerClientEvent("Notify",source,"negado","<b>O Baú está sendo usado por outra pessoa.</b>")
+			TriggerClientEvent("Notify", source, "negado", "<b>O Baú está sendo usado por outra pessoa.</b>")
 			return false
 		end
 	end
@@ -23,9 +23,9 @@ function vrpServer.loadVault(vaultName)
 	local data1 = vRP.getSData(vaultName)
 	local items = json.decode(data1) or {}
 
-    local actual = 0
+	local actual = 0
 
-	for k,v in pairs(items) do
+	for k, v in pairs(items) do
 		v.item = k
 		v.weight = itemlist[v.item].weight
 		v.icon = itemlist[v.item].icon
@@ -35,10 +35,10 @@ function vrpServer.loadVault(vaultName)
 		actual = actual + (v.weight * v.amount)
 		table.insert(data, v)
 	end
-	return json.encode(data),actual
+	return json.encode(data), actual
 end
 
-AddEventHandler("vRP:playerLeave",function(user_id,source)
+AddEventHandler("vRP:playerLeave", function(user_id, source)
 	if openVaults[user_id] then
 		openVaults[user_id] = nil
 	end
@@ -56,9 +56,9 @@ function vrpServer.checkIntPermissionsVault(homeName)
 	local source = source
 	local user_id = vRP.getUserId(source)
 	if user_id then
-		if not vRP.searchReturn(source,user_id) then
-			local myResult = vRP.query("homes/get_homeuser",{ user_id = parseInt(user_id), home = tostring(homeName) })
-			if myResult[1] or vRP.hasPermission(user_id,"policia.permissao") then
+		if not vRP.searchReturn(source, user_id) then
+			local myResult = vRP.query("vRP/get_homeuser", { user_id = parseInt(user_id), home = tostring(homeName) })
+			if myResult[1] or vRP.hasPermission(user_id, "policia.permissao") then
 				return true
 			end
 		end
@@ -77,14 +77,14 @@ AddEventHandler("b15798xx:pd-inventory:putItem", function(itemName, itemCount)
 	local user_id = vRP.getUserId(source)
 	local source = vRP.getUserSource(user_id)
 	local identity = vRP.getUserIdentity(user_id)
-	local vaultname = "chest:"..userVaults[user_id]
+	local vaultname = "chest:" .. userVaults[user_id]
 	local name = userVaults[user_id]
 	local max_weight = parseInt(cfg.homesChests[name].max)
 	local items = json.decode(vRP.getSData(vaultname)) or {}
 	if not actual then actual = 0 end
 	local add = false
 
-	for k,v in pairs(items) do
+	for k, v in pairs(items) do
 		if k == itemName then
 			add = true
 		end
@@ -98,7 +98,7 @@ AddEventHandler("b15798xx:pd-inventory:putItem", function(itemName, itemCount)
 			if add then
 				items[itemName].amount = items[itemName].amount + itemCount
 			else
-				items[itemName] = {amount = itemCount}
+				items[itemName] = { amount = itemCount }
 			end
 
 			if consumeItem(user_id, itemName, itemCount) then
@@ -113,7 +113,7 @@ AddEventHandler("b15798xx:pd-inventory:getItem", function(itemName, itemCount)
 	local user_id = vRP.getUserId(source)
 	local source = vRP.getUserSource(user_id)
 	local identity = vRP.getUserIdentity(user_id)
-	local vaultname = "chest:"..userVaults[user_id]
+	local vaultname = "chest:" .. userVaults[user_id]
 	local items = json.decode(vRP.getSData(vaultname)) or {}
 	if itemCount == 0 then itemCount = items[itemName].amount end
 	if checkWeightAmount(user_id, itemName, itemCount) and itemCount > 0 then
@@ -132,7 +132,7 @@ AddEventHandler("b15798xx:pd-inventory:getItem", function(itemName, itemCount)
 		elseif items[itemName].amount == itemCount and itemCount > 0 then
 			items[itemName] = nil
 		else
-			TriggerClientEvent("Notify",source,"aviso","Ocorreu algum erro! Tente abrir o porta-malas novamente.")
+			TriggerClientEvent("Notify", source, "aviso", "Ocorreu algum erro! Tente abrir o porta-malas novamente.")
 			return
 		end
 		giveItem(user_id, itemName, itemCount)

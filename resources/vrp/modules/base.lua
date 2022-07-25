@@ -81,29 +81,30 @@ end
 
 function vRP.getUserIdByIdentifiers(ids)
 	if ids and #ids then
-		for i=1,#ids do
-			if (string.find(ids[i],"ip:") == nil) then
-				local rows = vRP.query("vRP/userid_byidentifier",{ identifier = ids[i] })
+		for i = 1, #ids do
+			if (string.find(ids[i], "ip:") == nil) then
+				local rows = vRP.query("vRP/userid_byidentifier", { identifier = ids[i] })
 				if #rows > 0 then
 					return rows[1].user_id
 				end
 			end
 		end
 
-		local rows,affected = vRP.query("vRP/create_user",{})
-
+		local rows, affected = vRP.query("vRP/create_user", {})
 		if #rows > 0 then
 			local user_id = rows[1].id
-			local steam
-			for l,w in pairs(ids) do
-				if string.find(w,"steam:") then
-					steam = w
+			local license
+			for k, v in pairs(ids) do
+				if string.find(v, "license:") then
+					local splitName = splitString(v, ":")
+					license = splitName[2]
 				end
-				if (string.find(w,"ip:") == nil) then
-					vRP.execute("vRP/add_identifier",{ user_id = user_id, identifier = w })
+
+				if (string.find(v, "ip:") == nil) then
+					vRP.execute("vRP/add_identifier", { user_id = user_id, identifier = v })
 				end
 			end
-			vRP.execute("vRP/set_steam",{ user_id = user_id, steam = steam })
+			vRP.execute("vRP/set_license", { user_id = user_id, license = license })
 			return user_id
 		end
 	end
@@ -122,69 +123,9 @@ function vRP.isBanned(user_id, cbr)
 	end
 end
 
-function dump(o)
-	if type(o) == 'table' then
-	   local s = '{ '
-	   for k,v in pairs(o) do
-		  if type(k) ~= 'number' then k = '"'..k..'"' end
-		  s = s .. '['..k..'] = ' .. dump(v) .. ','
-	   end
-	   return s .. '} '
-	else
-	   return tostring(o)
-	end
- end
-
-function vRP.isIdentifiersBanned(user_id)
-	local identifiers = GetPlayerIdentifiers(user_id)
-	--local s = ""
-	local total = 0
-	for k,v in pairs(identifiers) do
-		--s = s.."'"..v.."',"
-		local count = vRP.query("vRP/get_banned_identifiers", { identifier = v })
-		total = total + #count
-	end
-	--local buffer = s:sub(1, #s - 1)
-	return total > 0
-end
-
-function vRP.setBanned(user_id,banned,hack)
-	local identifiers = vRP.query("vRP/get_identifiers_by_userid", { user_id = user_id })
-	if banned == false then
-		vRP.execute("vRP/rem_banned_identifiers", { user_id = user_id })
-	else
-		for k,v in pairs(identifiers) do
-			for l,w in pairs(v) do
-				if hack == 1 then
-					vRP.execute("vRP/add_banned",{ user_id = user_id, identifier = w, hacker = 1 })
-				else
-					vRP.execute("vRP/add_banned",{ user_id = user_id, identifier = w, hacker = 0 })
-				end
-			end
-		end
-	end
+function vRP.setBanned(user_id,banned)
 	vRP.execute("vRP/set_banned",{ user_id = user_id, banned = banned })
 end
-
-function setBanned(user_id,banned,hack)
-	source = source
-	local identifiers = vRP.query("vRP/get_identifiers_by_userid", { user_id = user_id })
-	if banned == false then
-		vRP.execute("vRP/rem_banned_identifiers", { user_id = user_id })
-	else
-		for k,v in pairs(identifiers) do
-			for l,w in pairs(v) do
-				if hack == 1 then
-					vRP.execute("vRP/add_banned",{ user_id = user_id, identifier = w, hacker = 1 })
-				else
-					vRP.execute("vRP/add_banned",{ user_id = user_id, identifier = w, hacker = 0 })
-				end
-			end
-		end
-	end
-	vRP.execute("vRP/set_banned",{ user_id = user_id, banned = banned })
-end
-exports("setBanned",setBanned)
 
 function vRP.isWhitelisted(user_id, cbr)
 	local rows = vRP.query("vRP/get_whitelisted",{ user_id = user_id })
@@ -243,17 +184,6 @@ function vRP.getUserId(source)
 	return nil
 end
 
-function getUserId(source)
-	if source ~= nil then
-		local ids = GetPlayerIdentifiers(source)
-		if ids ~= nil and #ids > 0 then
-			return vRP.users[ids[1]]
-		end
-	end
-	return nil
-end
-exports("getUserId",getUserId)
-
 function vRP.getUsers()
 	local users = {}
 	for k,v in pairs(vRP.user_sources) do
@@ -266,27 +196,13 @@ function vRP.getUserSource(user_id)
 	return vRP.user_sources[user_id]
 end
 
-function getUserSource(user_id)
-	return vRP.user_sources[user_id]
-end
-exports("getUserSource",getUserSource)
-
 function vRP.kick(source,reason)
 	DropPlayer(source,reason)
 end
 
-function kick(source,reason)
-	DropPlayer(source,reason)
-end
-exports("kick",kick)
-
 function vRP.dropPlayer(source,reason)
 	local source = source
 	local user_id = vRP.getUserId(source)
-	local steam = GetPlayerName(source)
-	local steamhex = GetPlayerIdentifier(source)
-	local ip = GetPlayerEndpoint(source)
-	local ping = GetPlayerPing(source)
 	vRPclient._removePlayer(-1,source)
 	if user_id then
 		if user_id and source then
@@ -337,8 +253,11 @@ AddEventHandler("queue:playerConnecting",function(source,ids,name,setKickReason,
 		local user_id = vRP.getUserIdByIdentifiers(ids)
 		if user_id then
 			deferrals.update("Carregando banimentos.")
-			if not vRP.isBanned(user_id) and not vRP.isIdentifiersBanned(source) then
+			if not vRP.isBanned(user_id) then
 				deferrals.update("Carregando whitelist.")
+				if user_id == 1 and not vRP.isWhitelisted(user_id) then
+					vRP.setWhitelisted(1, true)
+				end
 				if vRP.isWhitelisted(user_id) then
 					if vRP.rusers[user_id] == nil then
 						deferrals.update("Carregando banco de dados.")

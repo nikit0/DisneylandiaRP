@@ -1,16 +1,16 @@
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- VRP
 -----------------------------------------------------------------------------------------------------------------------------------------
-local Tunnel = module("vrp","lib/Tunnel")
-local Proxy = module("vrp","lib/Proxy")
-local Tools = module("vrp","lib/Tools")
+local Tunnel = module("vrp", "lib/Tunnel")
+local Proxy = module("vrp", "lib/Proxy")
+local Tools = module("vrp", "lib/Tools")
 vRP = Proxy.getInterface("vRP")
 vRPclient = Tunnel.getInterface("vRP")
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- CONEXÃO
 -----------------------------------------------------------------------------------------------------------------------------------------
 src = {}
-Tunnel.bindInterface("vrp_garages",src)
+Tunnel.bindInterface("vrp_garages", src)
 vCLIENT = Tunnel.getInterface("vrp_garages")
 local idgens = Tools.newIDGenerator()
 -----------------------------------------------------------------------------------------------------------------------------------------
@@ -27,19 +27,20 @@ trydoors["CREATIVE"] = true
 function src.returnVehicleEveryone(placa)
 	return trydoors[placa]
 end
+
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- SETPLATEEVERYONE
 -----------------------------------------------------------------------------------------------------------------------------------------
 RegisterServerEvent("setPlateEveryone")
-AddEventHandler("setPlateEveryone",function(plate)
-    trydoors[plate] = true
-    vCLIENT.syncTrydoors(-1,trydoors)
+AddEventHandler("setPlateEveryone", function(plate)
+	trydoors[plate] = true
+	vCLIENT.syncTrydoors(-1, trydoors)
 end)
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- PLAYERSPAWN
 -----------------------------------------------------------------------------------------------------------------------------------------
-AddEventHandler("vRP:playerSpawn",function(user_id,source)
-    vCLIENT.syncTrydoors(source,trydoors)
+AddEventHandler("vRP:playerSpawn", function(user_id, source)
+	vCLIENT.syncTrydoors(source, trydoors)
 end)
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- GARAGES
@@ -116,9 +117,9 @@ local garages = {
 	[70] = { ['name'] = "TransportadoraA", ['payment'] = false, ['perm'] = "transportadora.permissao" },
 	[71] = { ['name'] = "FedexAir", ['payment'] = false, ['perm'] = "fedex.permissao" },
 	[72] = { ['name'] = "Concessionaria", ['payment'] = false, ['perm'] = "platina.permissao" },
------------------------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------FORTHILLS-----------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------------------
+	-----------------------------------------------------------------------------------------------------------------------------------------
+	---------------------------------------------------------FORTHILLS-----------------------------------------------------------------------
+	-----------------------------------------------------------------------------------------------------------------------------------------
 	[145] = { ['name'] = "FH01", ['payment'] = false, ['public'] = false },
 	[148] = { ['name'] = "FH04", ['payment'] = false, ['public'] = false },
 	[150] = { ['name'] = "FH06", ['payment'] = false, ['public'] = false },
@@ -149,9 +150,9 @@ local garages = {
 	[237] = { ['name'] = "FH93", ['payment'] = false, ['public'] = false },
 	[238] = { ['name'] = "FH94", ['payment'] = false, ['public'] = false },
 	[240] = { ['name'] = "FH96", ['payment'] = false, ['public'] = false },
------------------------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------LUXURY--------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------------------
+	-----------------------------------------------------------------------------------------------------------------------------------------
+	---------------------------------------------------------LUXURY--------------------------------------------------------------------------
+	-----------------------------------------------------------------------------------------------------------------------------------------
 	[245] = { ['name'] = "LX01", ['payment'] = false, ['public'] = false },
 	[246] = { ['name'] = "LX02", ['payment'] = false, ['public'] = false },
 	[247] = { ['name'] = "LX03", ['payment'] = false, ['public'] = false },
@@ -217,9 +218,9 @@ local garages = {
 	[312] = { ['name'] = "LX68", ['payment'] = false, ['public'] = false },
 	[313] = { ['name'] = "LX69", ['payment'] = false, ['public'] = false },
 	[314] = { ['name'] = "LX70", ['payment'] = false, ['public'] = false },
------------------------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------SAMIR-------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------------------
+	-----------------------------------------------------------------------------------------------------------------------------------------
+	-----------------------------------------------------SAMIR-------------------------------------------------------------------------------
+	-----------------------------------------------------------------------------------------------------------------------------------------
 	[315] = { ['name'] = "LS01", ['payment'] = false, ['public'] = false },
 	[316] = { ['name'] = "LS02", ['payment'] = false, ['public'] = false },
 	[317] = { ['name'] = "LS03", ['payment'] = false, ['public'] = false },
@@ -292,9 +293,9 @@ local garages = {
 	[384] = { ['name'] = "LS70", ['payment'] = false, ['public'] = false },
 	[385] = { ['name'] = "LS71", ['payment'] = false, ['public'] = false },
 	[386] = { ['name'] = "LS72", ['payment'] = false, ['public'] = false },
------------------------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------KRONDORS------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------------------
+	-----------------------------------------------------------------------------------------------------------------------------------------
+	---------------------------------------------------------KRONDORS------------------------------------------------------------------------
+	-----------------------------------------------------------------------------------------------------------------------------------------
 	[387] = { ['name'] = "KR01", ['payment'] = false, ['public'] = false },
 	[388] = { ['name'] = "KR02", ['payment'] = false, ['public'] = false },
 	[389] = { ['name'] = "KR03", ['payment'] = false, ['public'] = false },
@@ -336,9 +337,9 @@ local garages = {
 	[425] = { ['name'] = "KR39", ['payment'] = false, ['public'] = false },
 	[426] = { ['name'] = "KR40", ['payment'] = false, ['public'] = false },
 	[427] = { ['name'] = "KR41", ['payment'] = false, ['public'] = false },
------------------------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------LOSVAGOS------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------------------
+	-----------------------------------------------------------------------------------------------------------------------------------------
+	---------------------------------------------------------LOSVAGOS------------------------------------------------------------------------
+	-----------------------------------------------------------------------------------------------------------------------------------------
 	[428] = { ['name'] = "LV01", ['payment'] = false, ['public'] = false },
 	[429] = { ['name'] = "LV02", ['payment'] = false, ['public'] = false },
 	[430] = { ['name'] = "LV03", ['payment'] = false, ['public'] = false },
@@ -374,9 +375,9 @@ local garages = {
 	[460] = { ['name'] = "LV33", ['payment'] = false, ['public'] = false },
 	[461] = { ['name'] = "LV34", ['payment'] = false, ['public'] = false },
 	[462] = { ['name'] = "LV35", ['payment'] = false, ['public'] = false },
------------------------------------------------------------------------------------------------------------------------------------------
--------------------------------------------------------------PALETOBAY-------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------------------
+	-----------------------------------------------------------------------------------------------------------------------------------------
+	-------------------------------------------------------------PALETOBAY-------------------------------------------------------------------
+	-----------------------------------------------------------------------------------------------------------------------------------------
 	[463] = { ['name'] = "PB01", ['payment'] = false, ['public'] = false },
 	[464] = { ['name'] = "PB02", ['payment'] = false, ['public'] = false },
 	[465] = { ['name'] = "PB03", ['payment'] = false, ['public'] = false },
@@ -408,9 +409,9 @@ local garages = {
 	[491] = { ['name'] = "PB29", ['payment'] = false, ['public'] = false },
 	[492] = { ['name'] = "PB30", ['payment'] = false, ['public'] = false },
 	[493] = { ['name'] = "PB31", ['payment'] = false, ['public'] = false },
------------------------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------MANSAO------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------------------
+	-----------------------------------------------------------------------------------------------------------------------------------------
+	-----------------------------------------------------MANSAO------------------------------------------------------------------------------
+	-----------------------------------------------------------------------------------------------------------------------------------------
 	[600] = { ['name'] = "MS01", ['payment'] = false, ['public'] = false },
 	[601] = { ['name'] = "MS02", ['payment'] = false, ['public'] = false },
 	[602] = { ['name'] = "MS03", ['payment'] = false, ['public'] = false },
@@ -420,13 +421,13 @@ local garages = {
 	[606] = { ['name'] = "MS07", ['payment'] = false, ['public'] = false },
 	[607] = { ['name'] = "MS08", ['payment'] = false, ['public'] = false },
 	[608] = { ['name'] = "MS09", ['payment'] = false, ['public'] = false },
------------------------------------------------------------------------------------------------------------------------------------------
--------------------------------------------------------------SANDYSHORE------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------------------
+	-----------------------------------------------------------------------------------------------------------------------------------------
+	-------------------------------------------------------------SANDYSHORE------------------------------------------------------------------
+	-----------------------------------------------------------------------------------------------------------------------------------------
 	[609] = { ['name'] = "SS01", ['payment'] = false, ['public'] = false },
------------------------------------------------------------------------------------------------------------------------------------------
--------------------------------------------------------------TREVORHOUSE-----------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------------------
+	-----------------------------------------------------------------------------------------------------------------------------------------
+	-------------------------------------------------------------TREVORHOUSE-----------------------------------------------------------------
+	-----------------------------------------------------------------------------------------------------------------------------------------
 	[610] = { ['name'] = "TR01", ['payment'] = false, ['public'] = false },
 }
 -----------------------------------------------------------------------------------------------------------------------------------------
@@ -436,7 +437,7 @@ local workgarage = {
 	["Policia"] = {
 		"policiacharger2018",
 		"policiachallenger2018",
-	    --"policiamustanggt",
+		--"policiamustanggt",
 		--"policiasilverado",
 		"policiatahoe",
 		--"policiaexplorer",
@@ -537,9 +538,9 @@ local workgarage = {
 		"predator"
 	},
 	["FedexAir"] = {
-    	"dlfedexcessna",
-    	"dlfedex737",
-    	"dlfedexdc10f"
+		"dlfedexcessna",
+		"dlfedex737",
+		"dlfedexdc10f"
 	},
 }
 -----------------------------------------------------------------------------------------------------------------------------------------
@@ -553,187 +554,189 @@ function src.myVehicles(work)
 	local status = ""
 	if user_id then
 		if workgarage[work] then
-			for k,v in pairs(workgarage) do
+			for k, v in pairs(workgarage) do
 				if k == work then
-					for k2,v2 in pairs(v) do
-						status = "<span class=\"green\">"..k.."</span>"
+					for k2, v2 in pairs(v) do
+						status = "<span class=\"green\">" .. k .. "</span>"
 						ipva = "<span class=\"green\">Pago</span>"
-						table.insert(myvehicles,{ name = v2, name2 = vRP.vehicleName(v2), engine = 100, body = 100, fuel = 100, status = status, ipva = ipva })
+						table.insert(myvehicles, { name = v2, name2 = vRP.vehicleName(v2), engine = 100, body = 100, fuel = 100, status = status, ipva = ipva })
 					end
 				end
 			end
 			return myvehicles
 		else
-			local vehicle = vRP.query("creative/get_vehicle",{ user_id = parseInt(user_id) })
-			local address = vRP.query("homes/get_homeuserid",{ user_id = parseInt(user_id) })
+			local vehicle = vRP.query("vRP/get_vehicle", { user_id = parseInt(user_id) })
+			local address = vRP.query("vRP/get_homeuserid", { user_id = parseInt(user_id) })
 			if #address > 0 then
-				for k,v in pairs(address) do
+				for k, v in pairs(address) do
 					if v.home == work then
-						for k2,v2 in pairs(vehicle) do
-							if parseInt(os.time()) <= parseInt(vehicle[k2].time+24*60*60) then
-								status = "<span class=\"red\">$"..vRP.format(parseInt(vRP.vehiclePrice(vehicle[k2].vehicle)*0.5)).."</span>"
+						for k2, v2 in pairs(vehicle) do
+							if parseInt(os.time()) <= parseInt(vehicle[k2].time + 24 * 60 * 60) then
+								status = "<span class=\"red\">$" .. vRP.format(parseInt(vRP.vehiclePrice(vehicle[k2].vehicle) * 0.5)) .. "</span>"
 							elseif vehicle[k2].detido == 1 then
-								status = "<span class=\"orange\">$"..vRP.format(parseInt(vRP.vehiclePrice(vehicle[k2].vehicle)*0.1)).."</span>"
+								status = "<span class=\"orange\">$" .. vRP.format(parseInt(vRP.vehiclePrice(vehicle[k2].vehicle) * 0.1)) .. "</span>"
 							else
 								status = "<span class=\"green\">Gratuita</span>"
 							end
 
-							if parseInt(os.time()) >= parseInt(vehicle[k2].ipva+24*15*60*60) then
+							if parseInt(os.time()) >= parseInt(vehicle[k2].ipva + 24 * 15 * 60 * 60) then
 								ipva = "<span class=\"red\">Atrasado</span>"
 							else
 								ipva = "<span class=\"green\">Pago</span>"
 							end
-							table.insert(myvehicles,{ name = vehicle[k2].vehicle, name2 = vRP.vehicleName(vehicle[k2].vehicle), engine = parseInt(vehicle[k2].engine*0.1), body = parseInt(vehicle[k2].body*0.1), fuel = parseInt(vehicle[k2].fuel), status = status, ipva = ipva })
+							table.insert(myvehicles, { name = vehicle[k2].vehicle, name2 = vRP.vehicleName(vehicle[k2].vehicle), engine = parseInt(vehicle[k2].engine * 0.1), body = parseInt(vehicle[k2].body * 0.1), fuel = parseInt(vehicle[k2].fuel), status = status, ipva = ipva })
 						end
 						return myvehicles
 					else
-						for k2,v2 in pairs(vehicle) do
-							if parseInt(os.time()) <= parseInt(vehicle[k2].time+24*60*60) then
-								status = "<span class=\"red\">$"..vRP.format(parseInt(vRP.vehiclePrice(vehicle[k2].vehicle)*0.5)).."</span>"
+						for k2, v2 in pairs(vehicle) do
+							if parseInt(os.time()) <= parseInt(vehicle[k2].time + 24 * 60 * 60) then
+								status = "<span class=\"red\">$" .. vRP.format(parseInt(vRP.vehiclePrice(vehicle[k2].vehicle) * 0.5)) .. "</span>"
 							elseif vehicle[k2].detido == 1 then
-								status = "<span class=\"orange\">$"..vRP.format(parseInt(vRP.vehiclePrice(vehicle[k2].vehicle)*0.1)).."</span>"
+								status = "<span class=\"orange\">$" .. vRP.format(parseInt(vRP.vehiclePrice(vehicle[k2].vehicle) * 0.1)) .. "</span>"
 							else
-								status = "<span class=\"green\">$"..vRP.format(parseInt(vRP.vehiclePrice(vehicle[k2].vehicle)*0.005)).."</span>"
+								status = "<span class=\"green\">$" .. vRP.format(parseInt(vRP.vehiclePrice(vehicle[k2].vehicle) * 0.005)) .. "</span>"
 							end
 
-							if parseInt(os.time()) >= parseInt(vehicle[k2].ipva+24*15*60*60) then
+							if parseInt(os.time()) >= parseInt(vehicle[k2].ipva + 24 * 15 * 60 * 60) then
 								ipva = "<span class=\"red\">Atrasado</span>"
 							else
 								ipva = "<span class=\"green\">Pago</span>"
 							end
-							table.insert(myvehicles,{ name = vehicle[k2].vehicle, name2 = vRP.vehicleName(vehicle[k2].vehicle), engine = parseInt(vehicle[k2].engine*0.1), body = parseInt(vehicle[k2].body*0.1), fuel = parseInt(vehicle[k2].fuel), status = status, ipva = ipva })
+							table.insert(myvehicles, { name = vehicle[k2].vehicle, name2 = vRP.vehicleName(vehicle[k2].vehicle), engine = parseInt(vehicle[k2].engine * 0.1), body = parseInt(vehicle[k2].body * 0.1), fuel = parseInt(vehicle[k2].fuel), status = status, ipva = ipva })
 						end
 						return myvehicles
 					end
 				end
 			else
-				for k,v in pairs(vehicle) do
-					if parseInt(os.time()) <= parseInt(vehicle[k].time+24*60*60) then
-						status = "<span class=\"red\">$"..vRP.format(parseInt(vRP.vehiclePrice(vehicle[k].vehicle)*0.5)).."</span>"
+				for k, v in pairs(vehicle) do
+					if parseInt(os.time()) <= parseInt(vehicle[k].time + 24 * 60 * 60) then
+						status = "<span class=\"red\">$" .. vRP.format(parseInt(vRP.vehiclePrice(vehicle[k].vehicle) * 0.5)) .. "</span>"
 					elseif vehicle[k].detido == 1 then
-						status = "<span class=\"orange\">$"..vRP.format(parseInt(vRP.vehiclePrice(vehicle[k].vehicle)*0.1)).."</span>"
+						status = "<span class=\"orange\">$" .. vRP.format(parseInt(vRP.vehiclePrice(vehicle[k].vehicle) * 0.1)) .. "</span>"
 					else
-						status = "<span class=\"green\">$"..vRP.format(parseInt(vRP.vehiclePrice(vehicle[k].vehicle)*0.005)).."</span>"
+						status = "<span class=\"green\">$" .. vRP.format(parseInt(vRP.vehiclePrice(vehicle[k].vehicle) * 0.005)) .. "</span>"
 					end
 
-					if parseInt(os.time()) >= parseInt(vehicle[k].ipva+24*15*60*60) then
+					if parseInt(os.time()) >= parseInt(vehicle[k].ipva + 24 * 15 * 60 * 60) then
 						ipva = "<span class=\"red\">Atrasado</span>"
 					else
 						ipva = "<span class=\"green\">Pago</span>"
 					end
-					table.insert(myvehicles,{ name = vehicle[k].vehicle, name2 = vRP.vehicleName(vehicle[k].vehicle), engine = parseInt(vehicle[k].engine*0.1), body = parseInt(vehicle[k].body*0.1), fuel = parseInt(vehicle[k].fuel), status = status, ipva = ipva })
+					table.insert(myvehicles, { name = vehicle[k].vehicle, name2 = vRP.vehicleName(vehicle[k].vehicle), engine = parseInt(vehicle[k].engine * 0.1), body = parseInt(vehicle[k].body * 0.1), fuel = parseInt(vehicle[k].fuel), status = status, ipva = ipva })
 				end
 				return myvehicles
 			end
 		end
 	end
 end
+
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- SPAWNVEHICLES
 -----------------------------------------------------------------------------------------------------------------------------------------
-function src.spawnVehicles(name,use)
+function src.spawnVehicles(name, use)
 	if name then
 		local source = source
 		local user_id = vRP.getUserId(source)
 		if user_id then
 			local identity = vRP.getUserIdentity(user_id)
-			local value = vRP.getUData(parseInt(user_id),"vRP:multas")
+			local value = vRP.getUData(parseInt(user_id), "vRP:multas")
 			local multas = json.decode(value) or 0
 			if multas > 0 then
-				TriggerClientEvent("Notify",source,"negado","Você tem multas pendentes.",10000)
+				TriggerClientEvent("Notify", source, "negado", "Você tem multas pendentes.", 10000)
 				return
 			end
-			if not vCLIENT.returnVehicle(source,name) then
-				local vehicle = vRP.query("creative/get_vehicles",{ user_id = parseInt(user_id), vehicle = name })
-				local tuning = vRP.getSData("custom:u"..user_id.."veh_"..name) or {}
+			if not vCLIENT.returnVehicle(source, name) then
+				local vehicle = vRP.query("vRP/get_vehicles", { user_id = parseInt(user_id), vehicle = name })
+				local tuning = vRP.getSData("custom:u" .. user_id .. "veh_" .. name) or {}
 				local custom = json.decode(tuning) or {}
 				if vehicle[1] ~= nil then
-					if parseInt(os.time()) <= parseInt(vehicle[1].time+24*60*60) then
-						local ok = vRP.request(source,"Veículo na retenção, deseja acionar o seguro pagando <b>$"..vRP.format(parseInt(vRP.vehiclePrice(name)*0.5)).."</b> dólares ?",60)
+					if parseInt(os.time()) <= parseInt(vehicle[1].time + 24 * 60 * 60) then
+						local ok = vRP.request(source, "Veículo na retenção, deseja acionar o seguro pagando <b>$" .. vRP.format(parseInt(vRP.vehiclePrice(name) * 0.5)) .. "</b> dólares ?", 60)
 						if ok then
-							if vRP.tryFullPayment(user_id,parseInt(vRP.vehiclePrice(name)*0.5)) then
-								vRP.execute("creative/set_detido",{ user_id = parseInt(user_id), vehicle = name, detido = 0, time = 0 })
-								TriggerClientEvent("Notify",source,"sucesso","Veículo liberado.",10000)
+							if vRP.tryFullPayment(user_id, parseInt(vRP.vehiclePrice(name) * 0.5)) then
+								vRP.execute("vRP/set_detido", { user_id = parseInt(user_id), vehicle = name, detido = 0, time = 0 })
+								TriggerClientEvent("Notify", source, "sucesso", "Veículo liberado.", 10000)
 							else
-								TriggerClientEvent("Notify",source,"negado","Dinheiro insuficiente.",10000)
+								TriggerClientEvent("Notify", source, "negado", "Dinheiro insuficiente.", 10000)
 							end
 						end
 					elseif parseInt(vehicle[1].detido) >= 1 then
-						local ok = vRP.request(source,"Veículo na detenção, deseja acionar o seguro pagando <b>$"..vRP.format(parseInt(vRP.vehiclePrice(name)*0.1)).."</b> dólares ?",60)
+						local ok = vRP.request(source, "Veículo na detenção, deseja acionar o seguro pagando <b>$" .. vRP.format(parseInt(vRP.vehiclePrice(name) * 0.1)) .. "</b> dólares ?", 60)
 						if ok then
-							if vRP.tryFullPayment(user_id,parseInt(vRP.vehiclePrice(name)*0.1)) then
-								vRP.execute("creative/set_detido",{ user_id = parseInt(user_id), vehicle = name, detido = 0, time = 0 })
-								TriggerClientEvent("Notify",source,"sucesso","Veículo liberado.",10000)
+							if vRP.tryFullPayment(user_id, parseInt(vRP.vehiclePrice(name) * 0.1)) then
+								vRP.execute("vRP/set_detido", { user_id = parseInt(user_id), vehicle = name, detido = 0, time = 0 })
+								TriggerClientEvent("Notify", source, "sucesso", "Veículo liberado.", 10000)
 							else
-								TriggerClientEvent("Notify",source,"negado","Dinheiro insuficiente.",10000)
+								TriggerClientEvent("Notify", source, "negado", "Dinheiro insuficiente.", 10000)
 							end
 						end
 					else
-						if parseInt(os.time()) <= parseInt(vehicle[1].ipva+24*15*60*60) then
+						if parseInt(os.time()) <= parseInt(vehicle[1].ipva + 24 * 15 * 60 * 60) then
 							if garages[use].payment then
-								if vRP.hasPermission(user_id,"platina.permissao") or vRP.vehicleClass(tostring(name)) == "exclusive" or vRP.vehicleClass(tostring(name)) == "rental" then
-									local spawnveh,vehid = vCLIENT.spawnVehicle(source,name,vehicle[1].engine,vehicle[1].body,vehicle[1].fuel,custom)
+								if vRP.hasPermission(user_id, "platina.permissao") or vRP.vehicleClass(tostring(name)) == "exclusive" or vRP.vehicleClass(tostring(name)) == "rental" then
+									local spawnveh, vehid = vCLIENT.spawnVehicle(source, name, vehicle[1].engine, vehicle[1].body, vehicle[1].fuel, custom)
 									if spawnveh then
-										vehlist[vehid] = { user_id,name }
-										TriggerEvent("setPlateEveryone",identity.registration)
-										TriggerClientEvent("Notify",source,"sucesso","Veículo <b>Isento de Taxas</b>.",10000)
+										vehlist[vehid] = { user_id, name }
+										TriggerEvent("setPlateEveryone", identity.registration)
+										TriggerClientEvent("Notify", source, "sucesso", "Veículo <b>Isento de Taxas</b>.", 10000)
 									end
-								elseif (vRP.getBankMoney(user_id)+vRP.getMoney(user_id)) >= parseInt(vRP.vehiclePrice(name)*0.005 and not (vRP.hasPermission(user_id,"platina.permissao") or vRP.vehicleClass(tostring(name)) == "exclusive" or vRP.vehicleClass(tostring(name)) == "rental")) then
-									if vRP.tryFullPayment(user_id,parseInt(vRP.vehiclePrice(name)*0.005)) then
-										local spawnveh,vehid = vCLIENT.spawnVehicle(source,name,vehicle[1].engine,vehicle[1].body,vehicle[1].fuel,custom)
+								elseif (vRP.getBankMoney(user_id) + vRP.getMoney(user_id)) >= parseInt(vRP.vehiclePrice(name) * 0.005 and not (vRP.hasPermission(user_id, "platina.permissao") or vRP.vehicleClass(tostring(name)) == "exclusive" or vRP.vehicleClass(tostring(name)) == "rental")) then
+									if vRP.tryFullPayment(user_id, parseInt(vRP.vehiclePrice(name) * 0.005)) then
+										local spawnveh, vehid = vCLIENT.spawnVehicle(source, name, vehicle[1].engine, vehicle[1].body, vehicle[1].fuel, custom)
 										if spawnveh then
-											vehlist[vehid] = { user_id,name }
-											TriggerEvent("setPlateEveryone",identity.registration)
+											vehlist[vehid] = { user_id, name }
+											TriggerEvent("setPlateEveryone", identity.registration)
 										end
 									else
-										TriggerClientEvent("Notify",source,"negado","Dinheiro insuficiente.",10000)
+										TriggerClientEvent("Notify", source, "negado", "Dinheiro insuficiente.", 10000)
 										return
 									end
 								end
 							else
-								local spawnveh,vehid = vCLIENT.spawnVehicle(source,name,vehicle[1].engine,vehicle[1].body,vehicle[1].fuel,custom)
+								local spawnveh, vehid = vCLIENT.spawnVehicle(source, name, vehicle[1].engine, vehicle[1].body, vehicle[1].fuel, custom)
 								if spawnveh then
-									vehlist[vehid] = { user_id,name }
-									TriggerEvent("setPlateEveryone",identity.registration)
+									vehlist[vehid] = { user_id, name }
+									TriggerEvent("setPlateEveryone", identity.registration)
 								end
 							end
 						else
-							if vRP.hasPermission(user_id,"platina.permissao") or vRP.vehicleClass(tostring(name)) == "exclusive" or vRP.vehicleClass(tostring(name)) == "rental" then
-								local ok = vRP.request(source,"Deseja pagar o <b>Vehicle Tax</b> do veículo <b>"..vRP.vehicleName(name).."</b> por <b>$"..vRP.format(parseInt(vRP.vehiclePrice(name)*0.02)).."</b> dólares ?",60)
+							if vRP.hasPermission(user_id, "platina.permissao") or vRP.vehicleClass(tostring(name)) == "exclusive" or vRP.vehicleClass(tostring(name)) == "rental" then
+								local ok = vRP.request(source, "Deseja pagar o <b>Vehicle Tax</b> do veículo <b>" .. vRP.vehicleName(name) .. "</b> por <b>$" .. vRP.format(parseInt(vRP.vehiclePrice(name) * 0.02)) .. "</b> dólares ?", 60)
 								if ok then
-									if vRP.tryFullPayment(user_id,parseInt(vRP.vehiclePrice(name)*0.02)) then
-										vRP.execute("creative/set_ipva",{ user_id = parseInt(user_id), vehicle = name, ipva = parseInt(os.time()) })
-										TriggerClientEvent("Notify",source,"sucesso","Pagamento do <b>Vehicle Tax</b> conclúido com sucesso.",10000)
+									if vRP.tryFullPayment(user_id, parseInt(vRP.vehiclePrice(name) * 0.02)) then
+										vRP.execute("vRP/set_ipva", { user_id = parseInt(user_id), vehicle = name, ipva = parseInt(os.time()) })
+										TriggerClientEvent("Notify", source, "sucesso", "Pagamento do <b>Vehicle Tax</b> conclúido com sucesso.", 10000)
 									else
-										TriggerClientEvent("Notify",source,"negado","Dinheiro insuficiente.",10000)
+										TriggerClientEvent("Notify", source, "negado", "Dinheiro insuficiente.", 10000)
 									end
 								end
 							else
-								local ok = vRP.request(source,"Deseja pagar o <b>Vehicle Tax</b> do veículo <b>"..vRP.vehicleName(name).."</b> por <b>$"..vRP.format(parseInt(vRP.vehiclePrice(name)*0.05)).."</b> dólares ?",60)
+								local ok = vRP.request(source, "Deseja pagar o <b>Vehicle Tax</b> do veículo <b>" .. vRP.vehicleName(name) .. "</b> por <b>$" .. vRP.format(parseInt(vRP.vehiclePrice(name) * 0.05)) .. "</b> dólares ?", 60)
 								if ok then
-									if vRP.tryFullPayment(user_id,parseInt(vRP.vehiclePrice(name)*0.05)) then
-										vRP.execute("creative/set_ipva",{ user_id = parseInt(user_id), vehicle = name, ipva = parseInt(os.time()) })
-										TriggerClientEvent("Notify",source,"sucesso","Pagamento do <b>Vehicle Tax</b> conclúido com sucesso.",10000)
+									if vRP.tryFullPayment(user_id, parseInt(vRP.vehiclePrice(name) * 0.05)) then
+										vRP.execute("vRP/set_ipva", { user_id = parseInt(user_id), vehicle = name, ipva = parseInt(os.time()) })
+										TriggerClientEvent("Notify", source, "sucesso", "Pagamento do <b>Vehicle Tax</b> conclúido com sucesso.", 10000)
 									else
-										TriggerClientEvent("Notify",source,"negado","Dinheiro insuficiente.",10000)
+										TriggerClientEvent("Notify", source, "negado", "Dinheiro insuficiente.", 10000)
 									end
 								end
 							end
 						end
 					end
 				else
-					local spawnveh,vehid = vCLIENT.spawnVehicle(source,name,1000,1000,100,custom)
+					local spawnveh, vehid = vCLIENT.spawnVehicle(source, name, 1000, 1000, 100, custom)
 					if spawnveh then
-						vehlist[vehid] = { user_id,name }
-						TriggerEvent("setPlateEveryone",identity.registration)
+						vehlist[vehid] = { user_id, name }
+						TriggerEvent("setPlateEveryone", identity.registration)
 					end
 				end
 			else
-				TriggerClientEvent("Notify",source,"aviso","Já possui um veículo deste modelo fora da garagem.",10000)
+				TriggerClientEvent("Notify", source, "aviso", "Já possui um veículo deste modelo fora da garagem.", 10000)
 			end
 		end
 	end
 end
+
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- DELETEVEHICLES
 -----------------------------------------------------------------------------------------------------------------------------------------
@@ -741,27 +744,28 @@ function src.deleteVehicles()
 	local source = source
 	local user_id = vRP.getUserId(source)
 	if user_id then
-		local vehicle = vRPclient.getNearestVehicle(source,30)
+		local vehicle = vRPclient.getNearestVehicle(source, 30)
 		if vehicle then
-			vCLIENT.deleteVehicle(source,vehicle)
+			vCLIENT.deleteVehicle(source, vehicle)
 		end
 	end
 end
+
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- DESMANCHE
 -----------------------------------------------------------------------------------------------------------------------------------------
 RegisterServerEvent("desmancheVehicles")
-AddEventHandler("desmancheVehicles",function()
+AddEventHandler("desmancheVehicles", function()
 	local source = source
 	local user_id = vRP.getUserId(source)
 	if user_id then
-		local vehicle,vnetid,placa,vname,lock,banned = vRPclient.vehList(source,7)
+		local vehicle, vnetid, placa, vname, lock, banned = vRPclient.vehList(source, 7)
 		if vehicle and placa then
 			local puser_id = vRP.getUserByRegistration(placa)
 			if puser_id then
-				vRP.execute("creative/set_detido",{ user_id = parseInt(puser_id), vehicle = vname, detido = 1, time = parseInt(os.time()) })
-				exports["pd-inventory"]:giveItem(user_id,"dinheirosujo",parseInt(vRP.vehiclePrice(vname)*0.1,true))
-				vCLIENT.deleteVehicle(source,vehicle)
+				vRP.execute("vRP/set_detido", { user_id = parseInt(puser_id), vehicle = vname, detido = 1, time = parseInt(os.time()) })
+				exports["pd-inventory"]:giveItem(user_id, "dinheirosujo", parseInt(vRP.vehiclePrice(vname) * 0.1, true))
+				vCLIENT.deleteVehicle(source, vehicle)
 			end
 		end
 	end
@@ -769,26 +773,26 @@ end)
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- DV
 -----------------------------------------------------------------------------------------------------------------------------------------
-RegisterCommand('dv',function(source,args,rawCommand)
+RegisterCommand('dv', function(source, args, rawCommand)
 	local user_id = vRP.getUserId(source)
-	if vRP.hasPermission(user_id,"admin.permissao") or vRP.hasPermission(user_id,"suporte.permissao") then
-		local vehicle = vRPclient.getNearestVehicle(source,7)
+	if vRP.hasPermission(user_id, "admin.permissao") or vRP.hasPermission(user_id, "suporte.permissao") then
+		local vehicle = vRPclient.getNearestVehicle(source, 7)
 		if vehicle then
-			vCLIENT.deleteVehicle(source,vehicle)
+			vCLIENT.deleteVehicle(source, vehicle)
 		end
 	end
 end)
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- DV AREA
 -----------------------------------------------------------------------------------------------------------------------------------------
-RegisterCommand('dvarea',function(source,args,rawCommand)
-    local user_id = vRP.getUserId(source)
-    if vRP.hasPermission(user_id,"admin.permissao") then
-    	if args[1] then
-	        local x,y,z = vRPclient.getPosition(source)
-	        TriggerClientEvent('dvarea',source,x,y,z,args[1])
-	    end
-    end
+RegisterCommand('dvarea', function(source, args, rawCommand)
+	local user_id = vRP.getUserId(source)
+	if vRP.hasPermission(user_id, "admin.permissao") then
+		if args[1] then
+			local x, y, z = vRPclient.getPosition(source)
+			TriggerClientEvent('dvarea', source, x, y, z, args[1])
+		end
+	end
 end)
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- VEHICLELOCK
@@ -797,17 +801,17 @@ function src.vehicleLock()
 	local source = source
 	local user_id = vRP.getUserId(source)
 	if user_id then
-		local vehicle,vnetid,placa,vname,lock,banned = vRPclient.vehList(source,7)
+		local vehicle, vnetid, placa, vname, lock, banned = vRPclient.vehList(source, 7)
 		if vehicle and placa then
 			local placa_user_id = vRP.getUserByRegistration(placa)
 			if user_id == placa_user_id then
-				vCLIENT.vehicleClientLock(-1,vnetid,lock)
-				TriggerClientEvent("vrp_sound:source",source,'lock',0.5)
-				vRPclient._CarregarObjeto(source,"anim@mp_player_intmenu@key_fob@","fob_click","p_car_keys_01",49,57005,0.11,0.03,-0.03,90.0,0.0,0.0)
+				vCLIENT.vehicleClientLock(-1, vnetid, lock)
+				TriggerClientEvent("vrp_sound:source", source, 'lock', 0.5)
+				vRPclient._CarregarObjeto(source, "anim@mp_player_intmenu@key_fob@", "fob_click", "p_car_keys_01", 49, 57005, 0.11, 0.03, -0.03, 90.0, 0.0, 0.0)
 				if lock == 1 then
-					TriggerClientEvent("Notify",source,"importante","Veículo <b>trancado</b> com sucesso.",8000)
+					TriggerClientEvent("Notify", source, "importante", "Veículo <b>trancado</b> com sucesso.", 8000)
 				else
-					TriggerClientEvent("Notify",source,"importante","Veículo <b>destrancado</b> com sucesso.",8000)
+					TriggerClientEvent("Notify", source, "importante", "Veículo <b>destrancado</b> com sucesso.", 8000)
 				end
 				Wait(800)
 				vRPclient._DeletarObjeto(source)
@@ -815,16 +819,17 @@ function src.vehicleLock()
 		end
 	end
 end
+
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- TRYDELETE
 -----------------------------------------------------------------------------------------------------------------------------------------
-function src.tryDelete(vehid,vehengine,vehbody,vehfuel)
+function src.tryDelete(vehid, vehengine, vehbody, vehfuel)
 	if vehlist[vehid] and vehid ~= 0 then
 		local user_id = vehlist[vehid][1]
 		local vehname = vehlist[vehid][2]
 		local player = vRP.getUserSource(user_id)
 		if player then
-			vCLIENT.syncNameDelete(player,vehname)
+			vCLIENT.syncNameDelete(player, vehname)
 		end
 
 		if vehengine <= 100 then
@@ -839,43 +844,44 @@ function src.tryDelete(vehid,vehengine,vehbody,vehfuel)
 			vehfuel = 100
 		end
 
-		local vehicle = vRP.query("creative/get_vehicles",{ user_id = parseInt(user_id), vehicle = vehname })
+		local vehicle = vRP.query("vRP/get_vehicles", { user_id = parseInt(user_id), vehicle = vehname })
 		if vehicle[1] ~= nil then
-			vRP.execute("creative/set_update_vehicles",{ user_id = parseInt(user_id), vehicle = vehname, engine = parseInt(vehengine), body = parseInt(vehbody), fuel = parseInt(vehfuel) })
+			vRP.execute("vRP/update_vehicles", { user_id = parseInt(user_id), vehicle = vehname, engine = parseInt(vehengine), body = parseInt(vehbody), fuel = parseInt(vehfuel) })
 		end
 	end
-	vCLIENT.syncVehicle(-1,vehid)
+	vCLIENT.syncVehicle(-1, vehid)
 end
+
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- TRYDELETEVEH
 -----------------------------------------------------------------------------------------------------------------------------------------
 RegisterServerEvent("trydeleteveh")
-AddEventHandler("trydeleteveh",function(vehid)
-	vCLIENT.syncVehicle(-1,vehid)
+AddEventHandler("trydeleteveh", function(vehid)
+	vCLIENT.syncVehicle(-1, vehid)
 end)
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- RETURNHOUSES
 -----------------------------------------------------------------------------------------------------------------------------------------
-function src.returnHouses(nome,garage)
+function src.returnHouses(nome, garage)
 	local source = source
 	local user_id = vRP.getUserId(source)
 	if user_id then
-		if not vRP.searchReturn(source,user_id) then
-			local address = vRP.query("homes/get_homeuserid",{ user_id = parseInt(user_id) })
+		if not vRP.searchReturn(source, user_id) then
+			local address = vRP.query("vRP/get_homeuserid", { user_id = parseInt(user_id) })
 			if #address > 0 then
-				for k,v in pairs(address) do
+				for k, v in pairs(address) do
 					if v.home == garages[garage].name then
 						if parseInt(v.garage) == 1 then
-							local resultOwner = vRP.query("homes/get_homeuseridowner",{ home = tostring(nome) })
+							local resultOwner = vRP.query("vRP/get_homeuseridowner", { home = tostring(nome) })
 							if resultOwner[1] then
-								if parseInt(os.time()) >= parseInt(resultOwner[1].tax+24*14*60*60) and vRP.hasPermission(user_id,"platina.permissao") and (string.find(v.home,"FH") or string.find(v.home,"LX") or string.find(v.home,"MS") or string.find(v.home,"SS")) then
-									vCLIENT.openGarage(source,nome,garage)
+								if parseInt(os.time()) >= parseInt(resultOwner[1].tax + 24 * 14 * 60 * 60) and vRP.hasPermission(user_id, "platina.permissao") and (string.find(v.home, "FH") or string.find(v.home, "LX") or string.find(v.home, "MS") or string.find(v.home, "SS")) then
+									vCLIENT.openGarage(source, nome, garage)
 								else
-									if parseInt(os.time()) >= parseInt(resultOwner[1].tax+24*14*60*60) then
-										TriggerClientEvent("Notify",source,"aviso","A <b>Property Tax</b> da residência está atrasada.",10000)
+									if parseInt(os.time()) >= parseInt(resultOwner[1].tax + 24 * 14 * 60 * 60) then
+										TriggerClientEvent("Notify", source, "aviso", "A <b>Property Tax</b> da residência está atrasada.", 10000)
 										return false
 									else
-										vCLIENT.openGarage(source,nome,garage)
+										vCLIENT.openGarage(source, nome, garage)
 									end
 								end
 							end
@@ -884,34 +890,35 @@ function src.returnHouses(nome,garage)
 				end
 			end
 			if garages[garage].perm == "livre" then
-				return vCLIENT.openGarage(source,nome,garage)
+				return vCLIENT.openGarage(source, nome, garage)
 			elseif garages[garage].perm then
-				if vRP.hasPermission(user_id,garages[garage].perm) then
-					return vCLIENT.openGarage(source,nome,garage)
+				if vRP.hasPermission(user_id, garages[garage].perm) then
+					return vCLIENT.openGarage(source, nome, garage)
 				end
 			elseif garages[garage].public then
-				return vCLIENT.openGarage(source,nome,garage)
+				return vCLIENT.openGarage(source, nome, garage)
 			end
 		end
 		return false
 	end
 end
+
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- VEHICLE ANCORAR
 -----------------------------------------------------------------------------------------------------------------------------------------
-RegisterCommand('travar',function(source,args,rawCommand)
+RegisterCommand('travar', function(source, args, rawCommand)
 	local source = source
 	local user_id = vRP.getUserId(source)
-	local x,y,z = vRPclient.getPosition(source)
+	local x, y, z = vRPclient.getPosition(source)
 	if user_id then
-		if vRP.hasPermission(user_id,"policia.permissao") or vRP.hasPermission(user_id,"conce.permissao") or vRP.hasPermission(user_id,"admin.permissao") then
+		if vRP.hasPermission(user_id, "policia.permissao") or vRP.hasPermission(user_id, "conce.permissao") or vRP.hasPermission(user_id, "admin.permissao") then
 			if vRPclient.isInVehicle(source) then
-				if vRP.hasPermission(user_id,"admin.permissao") or (vRPclient.checkDistance(source,-1046.38,-860.83,4.92,20) or vRPclient.checkDistance(source,-483.41,6025.20,31.35,20)) then
-					local vehicle,vnetid,placa,vname,lock,banned = vRPclient.vehList(source,7)
+				if vRP.hasPermission(user_id, "admin.permissao") or (vRPclient.checkDistance(source, -1046.38, -860.83, 4.92, 20) or vRPclient.checkDistance(source, -483.41, 6025.20, 31.35, 20)) then
+					local vehicle, vnetid, placa, vname, lock, banned = vRPclient.vehList(source, 7)
 					if vehicle then
-						TriggerClientEvent("progress",source,5000,"travar/destravar")
-						SetTimeout(5000,function()
-							vCLIENT.vehicleAnchor(source,vehicle,x,y,z)
+						TriggerClientEvent("progress", source, 5000, "travar/destravar")
+						SetTimeout(5000, function()
+							vCLIENT.vehicleAnchor(source, vehicle, x, y, z)
 						end)
 					end
 				end
@@ -922,14 +929,14 @@ end)
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- BOAT ANCORAR
 -----------------------------------------------------------------------------------------------------------------------------------------
-RegisterCommand('ancorar',function(source,args,rawCommand)
+RegisterCommand('ancorar', function(source, args, rawCommand)
 	local source = source
 	local user_id = vRP.getUserId(source)
 	if user_id then
 		if vRPclient.isInVehicle(source) then
-			local vehicle,vnetid,placa,vname,lock,banned = vRPclient.vehList(source,7)
+			local vehicle, vnetid, placa, vname, lock, banned = vRPclient.vehList(source, 7)
 			if vehicle then
-				vCLIENT.boatAnchor(source,vehicle)
+				vCLIENT.boatAnchor(source, vehicle)
 			end
 		end
 	end
@@ -937,14 +944,14 @@ end)
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- CAR
 -----------------------------------------------------------------------------------------------------------------------------------------
-RegisterCommand('car',function(source,args,rawCommand)
+RegisterCommand('car', function(source, args, rawCommand)
 	local user_id = vRP.getUserId(source)
 	if user_id then
 		local identity = vRP.getUserIdentity(user_id)
-		if vRP.hasPermission(user_id,"admin.permissao") then
+		if vRP.hasPermission(user_id, "admin.permissao") then
 			if args[1] then
-				TriggerClientEvent('spawnarveiculo',source,args[1])
-				TriggerEvent("setPlateEveryone",identity.registration)
+				TriggerClientEvent('spawnarveiculo', source, args[1])
+				TriggerEvent("setPlateEveryone", identity.registration)
 			end
 		end
 	end
@@ -952,108 +959,108 @@ end)
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- VEHS
 -----------------------------------------------------------------------------------------------------------------------------------------
-RegisterCommand('vehs',function(source,args,rawCommand)
+RegisterCommand('vehs', function(source, args, rawCommand)
 	local user_id = vRP.getUserId(source)
 	if user_id then
 		if args[1] and parseInt(args[2]) > 0 then
 			local nplayer = vRP.getUserSource(parseInt(args[2]))
-			local myvehicles = vRP.query("creative/get_vehicles",{ user_id = parseInt(user_id), vehicle = tostring(args[1]) })
+			local myvehicles = vRP.query("vRP/get_vehicles", { user_id = parseInt(user_id), vehicle = tostring(args[1]) })
 
-			local value = vRP.getUData(parseInt(user_id),"vRP:multas")
+			local value = vRP.getUData(parseInt(user_id), "vRP:multas")
 			local multas = json.decode(value) or 0
 			if multas > 0 then
-				TriggerClientEvent("Notify",source,"negado","Você tem multas pendentes.",10000)
+				TriggerClientEvent("Notify", source, "negado", "Você tem multas pendentes.", 10000)
 				return
 			end
 
-			if parseInt(os.time()) >= parseInt(myvehicles[1].ipva+24*15*60*60) then
-				TriggerClientEvent("Notify",source,"negado","Seu <b>Vehicle Tax</b> está atrasado.",10000)
+			if parseInt(os.time()) >= parseInt(myvehicles[1].ipva + 24 * 15 * 60 * 60) then
+				TriggerClientEvent("Notify", source, "negado", "Seu <b>Vehicle Tax</b> está atrasado.", 10000)
 				return
 			end
 
-			if vRP.searchReturn(source,user_id) then
+			if vRP.searchReturn(source, user_id) then
 				return
 			end
 
 			if myvehicles[1] then
-				if (vRP.vehicleClass(tostring(args[1])) == "exclusive" or vRP.vehicleClass(tostring(args[1])) == "rental" or vRP.vehicleClass(tostring(args[1])) == "vip") and not vRP.hasPermission(user_id,"admin.permissao") then
-					TriggerClientEvent("Notify",source,"negado","<b>"..vRP.vehicleName(tostring(args[1])).."</b> não pode ser transferido</b>.",10000)
+				if (vRP.vehicleClass(tostring(args[1])) == "exclusive" or vRP.vehicleClass(tostring(args[1])) == "rental" or vRP.vehicleClass(tostring(args[1])) == "vip") and not vRP.hasPermission(user_id, "admin.permissao") then
+					TriggerClientEvent("Notify", source, "negado", "<b>" .. vRP.vehicleName(tostring(args[1])) .. "</b> não pode ser transferido</b>.", 10000)
 				else
 					local identity = vRP.getUserIdentity(parseInt(args[2]))
 					local identity2 = vRP.getUserIdentity(user_id)
-					local price = tonumber(sanitizeString(vRP.prompt(source,"Valor:",""),"\"[]{}+=?!_()#@%/\\|,.",false))
+					local price = tonumber(sanitizeString(vRP.prompt(source, "Valor:", ""), "\"[]{}+=?!_()#@%/\\|,.", false))
 					if nplayer ~= nil then
-						if vRP.request(source,"Deseja vender um <b>"..vRP.vehicleName(tostring(args[1])).."</b> para <b>"..identity.name.." "..identity.firstname.."</b> por <b>$"..vRP.format(parseInt(price)).."</b> dólares ?",30) then
-							if vRP.request(nplayer,"Aceita comprar um <b>"..vRP.vehicleName(tostring(args[1])).."</b> de <b>"..identity2.name.." "..identity2.firstname.."</b> por <b>$"..vRP.format(parseInt(price)).."</b> dólares ?",30) then
-								local vehicle = vRP.query("creative/get_vehicles",{ user_id = parseInt(args[2]), vehicle = tostring(args[1]) })
+						if vRP.request(source, "Deseja vender um <b>" .. vRP.vehicleName(tostring(args[1])) .. "</b> para <b>" .. identity.name .. " " .. identity.firstname .. "</b> por <b>$" .. vRP.format(parseInt(price)) .. "</b> dólares ?", 30) then
+							if vRP.request(nplayer, "Aceita comprar um <b>" .. vRP.vehicleName(tostring(args[1])) .. "</b> de <b>" .. identity2.name .. " " .. identity2.firstname .. "</b> por <b>$" .. vRP.format(parseInt(price)) .. "</b> dólares ?", 30) then
+								local vehicle = vRP.query("vRP/get_vehicles", { user_id = parseInt(args[2]), vehicle = tostring(args[1]) })
 								if parseInt(price) > 0 then
 									if vehicle[1] then
-										TriggerClientEvent("Notify",source,"negado","<b>"..identity.name.." "..identity.firstname.."</b> já possui este modelo de veículo.",10000)
-										TriggerClientEvent("Notify",nplayer,"negado","Você já possui um <b>"..vRP.vehicleName(tostring(args[1])).."</b> em sua garagem.",10000)
+										TriggerClientEvent("Notify", source, "negado", "<b>" .. identity.name .. " " .. identity.firstname .. "</b> já possui este modelo de veículo.", 10000)
+										TriggerClientEvent("Notify", nplayer, "negado", "Você já possui um <b>" .. vRP.vehicleName(tostring(args[1])) .. "</b> em sua garagem.", 10000)
 										return
 									end
 
-									local value = vRP.getUData(parseInt(args[2]),"vRP:multas")
+									local value = vRP.getUData(parseInt(args[2]), "vRP:multas")
 									local multas = json.decode(value) or 0
 									if multas > 0 and parseInt(args[2]) then
-										TriggerClientEvent("Notify",source,"negado","<b>"..identity.name.." "..identity.firstname.."</b> possui multas pendentes.",10000)
-										TriggerClientEvent("Notify",nplayer,"negado","Você tem multas pendentes.",10000)
+										TriggerClientEvent("Notify", source, "negado", "<b>" .. identity.name .. " " .. identity.firstname .. "</b> possui multas pendentes.", 10000)
+										TriggerClientEvent("Notify", nplayer, "negado", "Você tem multas pendentes.", 10000)
 										return
 									end
 
-									local maxvehs = vRP.query("creative/con_maxvehs",{ user_id = parseInt(args[2]) })
-									local maxcars = vRP.query("creative/get_users",{ user_id = parseInt(args[2]) })
-									if vRP.hasPermission(parseInt(args[2]),"conce.permissao") then
+									local maxvehs = vRP.query("vRP/con_maxvehs", { user_id = parseInt(args[2]) })
+									local maxcars = vRP.query("vRP/get_users", { user_id = parseInt(args[2]) })
+									if vRP.hasPermission(parseInt(args[2]), "conce.permissao") then
 										if parseInt(maxvehs[1].qtd) >= parseInt(maxcars[1].garagem) + 100 then
-											TriggerClientEvent("Notify",source,"importante","<b>"..identity.name.." "..identity.firstname.."</b> atingiu o número máximo de veículos em sua garagem.",8000)
-											TriggerClientEvent("Notify",nplayer,"importante","Você atingiu o número máximo de veículos em sua garagem.",8000)
+											TriggerClientEvent("Notify", source, "importante", "<b>" .. identity.name .. " " .. identity.firstname .. "</b> atingiu o número máximo de veículos em sua garagem.", 8000)
+											TriggerClientEvent("Notify", nplayer, "importante", "Você atingiu o número máximo de veículos em sua garagem.", 8000)
 											return
 										end
-									elseif vRP.hasPermission(parseInt(args[2]),"ouro.permissao") then
+									elseif vRP.hasPermission(parseInt(args[2]), "ouro.permissao") then
 										if parseInt(maxvehs[1].qtd) >= parseInt(maxcars[1].garagem) + 3 then
-											TriggerClientEvent("Notify",source,"importante","<b>"..identity.name.." "..identity.firstname.."</b> atingiu o número máximo de veículos em sua garagem.",8000)
-											TriggerClientEvent("Notify",nplayer,"importante","Você atingiu o número máximo de veículos em sua garagem.",8000)
+											TriggerClientEvent("Notify", source, "importante", "<b>" .. identity.name .. " " .. identity.firstname .. "</b> atingiu o número máximo de veículos em sua garagem.", 8000)
+											TriggerClientEvent("Notify", nplayer, "importante", "Você atingiu o número máximo de veículos em sua garagem.", 8000)
 											return
 										end
-									elseif vRP.hasPermission(parseInt(args[2]),"platina.permissao") then
+									elseif vRP.hasPermission(parseInt(args[2]), "platina.permissao") then
 										if parseInt(maxvehs[1].qtd) >= parseInt(maxcars[1].garagem) + 6 then
-											TriggerClientEvent("Notify",source,"importante","<b>"..identity.name.." "..identity.firstname.."</b> atingiu o número máximo de veículos em sua garagem.",8000)
-											TriggerClientEvent("Notify",nplayer,"importante","Você atingiu o número máximo de veículos em sua garagem.",8000)
+											TriggerClientEvent("Notify", source, "importante", "<b>" .. identity.name .. " " .. identity.firstname .. "</b> atingiu o número máximo de veículos em sua garagem.", 8000)
+											TriggerClientEvent("Notify", nplayer, "importante", "Você atingiu o número máximo de veículos em sua garagem.", 8000)
 											return
 										end
 									else
 										if parseInt(maxvehs[1].qtd) >= parseInt(maxcars[1].garagem) then
-											TriggerClientEvent("Notify",source,"importante","<b>"..identity.name.." "..identity.firstname.."</b> atingiu o número máximo de veículos em sua garagem.",8000)
-											TriggerClientEvent("Notify",nplayer,"importante","Você atingiu o número máximo de veículos em sua garagem.",8000)
+											TriggerClientEvent("Notify", source, "importante", "<b>" .. identity.name .. " " .. identity.firstname .. "</b> atingiu o número máximo de veículos em sua garagem.", 8000)
+											TriggerClientEvent("Notify", nplayer, "importante", "Você atingiu o número máximo de veículos em sua garagem.", 8000)
 											return
 										end
 									end
 
-									if vRP.tryFullPayment(parseInt(args[2]),parseInt(price)) then
-										vRP.execute("creative/move_vehicle",{ user_id = parseInt(user_id), nuser_id = parseInt(args[2]), vehicle = tostring(args[1]) })
+									if vRP.tryFullPayment(parseInt(args[2]), parseInt(price)) then
+										vRP.execute("vRP/move_vehicle", { user_id = parseInt(user_id), nuser_id = parseInt(args[2]), vehicle = tostring(args[1]) })
 
-										local custom = vRP.getSData("custom:u"..parseInt(user_id).."veh_"..tostring(args[1]))
+										local custom = vRP.getSData("custom:u" .. parseInt(user_id) .. "veh_" .. tostring(args[1]))
 										local custom2 = json.decode(custom)
 										if custom2 then
-											vRP.setSData("custom:u"..parseInt(args[2]).."veh_"..tostring(args[1]),json.encode(custom2))
-											vRP.execute("creative/rem_srv_data",{ dkey = "custom:u"..parseInt(user_id).."veh_"..tostring(args[1]) })
+											vRP.setSData("custom:u" .. parseInt(args[2]) .. "veh_" .. tostring(args[1]), json.encode(custom2))
+											vRP.execute("vRP/rem_veh_srv_data", { dkey = "custom:u" .. parseInt(user_id) .. "veh_" .. tostring(args[1]) })
 										end
 
-										local chest = vRP.getSData("chest:u"..parseInt(user_id).."veh_"..tostring(args[1]))
+										local chest = vRP.getSData("chest:u" .. parseInt(user_id) .. "veh_" .. tostring(args[1]))
 										local chest2 = json.decode(chest)
 										if chest2 then
-											vRP.setSData("chest:u"..parseInt(args[2]).."veh_"..tostring(args[1]),json.encode(chest2))
-											vRP.execute("creative/rem_srv_data",{ dkey = "chest:u"..parseInt(user_id).."veh_"..tostring(args[1]) })
+											vRP.setSData("chest:u" .. parseInt(args[2]) .. "veh_" .. tostring(args[1]), json.encode(chest2))
+											vRP.execute("vRP/rem_veh_srv_data", { dkey = "chest:u" .. parseInt(user_id) .. "veh_" .. tostring(args[1]) })
 										end
 
-										TriggerClientEvent("Notify",source,"sucesso","Você Vendeu <b>"..vRP.vehicleName(tostring(args[1])).."</b> e Recebeu <b>$"..vRP.format(parseInt(price)).."</b> dólares.",20000)
-										TriggerClientEvent("Notify",nplayer,"importante","Você recebeu as chaves do veículo <b>"..vRP.vehicleName(tostring(args[1])).."</b> de <b>"..identity2.name.." "..identity2.firstname.."</b> e pagou <b>$"..vRP.format(parseInt(price)).."</b> dólares.",40000)
-										vRPclient.playSound(source,"Hack_Success","DLC_HEIST_BIOLAB_PREP_HACKING_SOUNDS")
-										vRPclient.playSound(nplayer,"Hack_Success","DLC_HEIST_BIOLAB_PREP_HACKING_SOUNDS")
-										vRP.giveMoney(user_id,parseInt(price))
+										TriggerClientEvent("Notify", source, "sucesso", "Você Vendeu <b>" .. vRP.vehicleName(tostring(args[1])) .. "</b> e Recebeu <b>$" .. vRP.format(parseInt(price)) .. "</b> dólares.", 20000)
+										TriggerClientEvent("Notify", nplayer, "importante", "Você recebeu as chaves do veículo <b>" .. vRP.vehicleName(tostring(args[1])) .. "</b> de <b>" .. identity2.name .. " " .. identity2.firstname .. "</b> e pagou <b>$" .. vRP.format(parseInt(price)) .. "</b> dólares.", 40000)
+										vRPclient.playSound(source, "Hack_Success", "DLC_HEIST_BIOLAB_PREP_HACKING_SOUNDS")
+										vRPclient.playSound(nplayer, "Hack_Success", "DLC_HEIST_BIOLAB_PREP_HACKING_SOUNDS")
+										vRP.giveMoney(user_id, parseInt(price))
 									else
-										TriggerClientEvent("Notify",source,"negado","Dinheiro insuficiente.",8000)
-										TriggerClientEvent("Notify",nplayer,"negado","Dinheiro insuficiente.",8000)
+										TriggerClientEvent("Notify", source, "negado", "Dinheiro insuficiente.", 8000)
+										TriggerClientEvent("Notify", nplayer, "negado", "Dinheiro insuficiente.", 8000)
 									end
 								end
 							end
@@ -1061,12 +1068,12 @@ RegisterCommand('vehs',function(source,args,rawCommand)
 					end
 				end
 			else
-				local vehicle = vRP.query("creative/get_vehicle",{ user_id = parseInt(user_id) })
-				for k,v in pairs(vehicle) do
-					if parseInt(os.time()) >= parseInt(v.ipva+24*15*60*60) then
-						TriggerClientEvent("Notify",source,"negado","<b>Modelo:</b> "..vRP.vehicleName(v.vehicle).." <b>("..v.vehicle..")</b><br>Vehicle Tax: <b>Atrasado</b>",20000)
+				local vehicle = vRP.query("vRP/get_vehicle", { user_id = parseInt(user_id) })
+				for k, v in pairs(vehicle) do
+					if parseInt(os.time()) >= parseInt(v.ipva + 24 * 15 * 60 * 60) then
+						TriggerClientEvent("Notify", source, "negado", "<b>Modelo:</b> " .. vRP.vehicleName(v.vehicle) .. " <b>(" .. v.vehicle .. ")</b><br>Vehicle Tax: <b>Atrasado</b>", 20000)
 					else
-						TriggerClientEvent("Notify",source,"importante","<b>Modelo:</b> "..vRP.vehicleName(v.vehicle).." <b>("..v.vehicle..")</b><br>Vehicle Tax: <b>"..vRPclient.getTimeFunction(source,parseInt(86400*15-(os.time()-v.ipva))).."</b>.",20000)
+						TriggerClientEvent("Notify", source, "importante", "<b>Modelo:</b> " .. vRP.vehicleName(v.vehicle) .. " <b>(" .. v.vehicle .. ")</b><br>Vehicle Tax: <b>" .. vRPclient.getTimeFunction(source, parseInt(86400 * 15 - (os.time() - v.ipva))) .. "</b>.", 20000)
 					end
 				end
 			end
@@ -1077,39 +1084,39 @@ end)
 -- REPARAR
 -----------------------------------------------------------------------------------------------------------------------------------------
 RegisterServerEvent("tryreparar")
-AddEventHandler("tryreparar",function(nveh)
-	TriggerClientEvent("syncreparar",-1,nveh)
+AddEventHandler("tryreparar", function(nveh)
+	TriggerClientEvent("syncreparar", -1, nveh)
 end)
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- REPARAR PNEUS
 -----------------------------------------------------------------------------------------------------------------------------------------
 RegisterServerEvent("tryrepararpneus")
-AddEventHandler("tryrepararpneus",function(nveh)
-	TriggerClientEvent("syncrepararpneus",-1,nveh)
+AddEventHandler("tryrepararpneus", function(nveh)
+	TriggerClientEvent("syncrepararpneus", -1, nveh)
 end)
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- MOTOR
 -----------------------------------------------------------------------------------------------------------------------------------------
 RegisterServerEvent("trymotor")
-AddEventHandler("trymotor",function(nveh)
-	TriggerClientEvent("syncmotor",-1,nveh)
+AddEventHandler("trymotor", function(nveh)
+	TriggerClientEvent("syncmotor", -1, nveh)
 end)
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- SAVELIVERY
 -----------------------------------------------------------------------------------------------------------------------------------------
-RegisterCommand('savelivery',function(source,args,rawCommand)
+RegisterCommand('savelivery', function(source, args, rawCommand)
 	local source = source
 	local user_id = vRP.getUserId(source)
-	if vRP.hasPermission(user_id,"admin.permissao") or vRP.hasPermission(user_id,"mecanico.permissao") then
-		local vehicle,vnetid,placa,vname = vRPclient.vehList(source,7)
+	if vRP.hasPermission(user_id, "admin.permissao") or vRP.hasPermission(user_id, "mecanico.permissao") then
+		local vehicle, vnetid, placa, vname = vRPclient.vehList(source, 7)
 		if vehicle and placa then
 			local puser_id = vRP.getUserByRegistration(placa)
 			if puser_id then
-				local custom = json.decode(vRP.getSData("custom:u"..parseInt(puser_id).."veh_"..vname))
-				local livery = vCLIENT.returnlivery(source,livery)
+				local custom = json.decode(vRP.getSData("custom:u" .. parseInt(puser_id) .. "veh_" .. vname))
+				local livery = vCLIENT.returnlivery(source, livery)
 				custom.liveries = livery
 				--print(json.encode(custom))
-				vRP.setSData("custom:u"..parseInt(puser_id).."veh_"..vname,json.encode(custom))
+				vRP.setSData("custom:u" .. parseInt(puser_id) .. "veh_" .. vname, json.encode(custom))
 			end
 		end
 	end
@@ -1117,20 +1124,20 @@ end)
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- SAVECOLOR
 -----------------------------------------------------------------------------------------------------------------------------------------
-RegisterCommand('savecolor',function(source,args,rawCommand)
+RegisterCommand('savecolor', function(source, args, rawCommand)
 	local source = source
 	local user_id = vRP.getUserId(source)
-	if vRP.hasPermission(user_id,"admin.permissao") or vRP.hasPermission(user_id,"mecanico.permissao") then
-		local vehicle,vnetid,placa,vname = vRPclient.vehList(source,7)
+	if vRP.hasPermission(user_id, "admin.permissao") or vRP.hasPermission(user_id, "mecanico.permissao") then
+		local vehicle, vnetid, placa, vname = vRPclient.vehList(source, 7)
 		if vehicle and placa then
 			local puser_id = vRP.getUserByRegistration(placa)
 			if puser_id then
-				local custom = json.decode(vRP.getSData("custom:u"..parseInt(puser_id).."veh_"..vname))
-				local r1,g1,b1 = vCLIENT.returncolor1(source,r,g,b)
-				local r2,g2,b2 = vCLIENT.returncolor2(source,r,g,b)
-				custom.customcolor1 = {r1,g1,b1}
-				custom.customcolor2 = {r2,g2,b2}
-				vRP.setSData("custom:u"..parseInt(puser_id).."veh_"..vname,json.encode(custom))
+				local custom = json.decode(vRP.getSData("custom:u" .. parseInt(puser_id) .. "veh_" .. vname))
+				local r1, g1, b1 = vCLIENT.returncolor1(source, r, g, b)
+				local r2, g2, b2 = vCLIENT.returncolor2(source, r, g, b)
+				custom.customcolor1 = { r1, g1, b1 }
+				custom.customcolor2 = { r2, g2, b2 }
+				vRP.setSData("custom:u" .. parseInt(puser_id) .. "veh_" .. vname, json.encode(custom))
 			end
 		end
 	end
@@ -1141,23 +1148,25 @@ end)
 function src.CheckLiveryPermission()
 	local source = source
 	local user_id = vRP.getUserId(source)
-	return (vRP.hasPermission(user_id,"admin.permissao") or vRP.hasPermission(user_id,"mecanico.permissao"))
+	return (vRP.hasPermission(user_id, "admin.permissao") or vRP.hasPermission(user_id, "mecanico.permissao"))
 end
+
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- CHECK COLOR PERMISSION
 -----------------------------------------------------------------------------------------------------------------------------------------
 function src.CheckColorPermission()
 	local source = source
 	local user_id = vRP.getUserId(source)
-	return (vRP.hasPermission(user_id,"admin.permissao") or vRP.hasPermission(user_id,"mecanico.permissao"))
+	return (vRP.hasPermission(user_id, "admin.permissao") or vRP.hasPermission(user_id, "mecanico.permissao"))
 end
+
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- HASH
 -----------------------------------------------------------------------------------------------------------------------------------------
-RegisterCommand('hash',function(source,args,rawCommand)
-    local user_id = vRP.getUserId(source)
-    if vRP.hasPermission(user_id,"admin.permissao") then
-        local vehhash = vCLIENT.getHash(source,vehiclehash)
-        vRP.prompt(source,"Hash:",""..vehhash)
-    end
+RegisterCommand('hash', function(source, args, rawCommand)
+	local user_id = vRP.getUserId(source)
+	if vRP.hasPermission(user_id, "admin.permissao") then
+		local vehhash = vCLIENT.getHash(source, vehiclehash)
+		vRP.prompt(source, "Hash:", "" .. vehhash)
+	end
 end)
