@@ -216,6 +216,17 @@ local groups = {
 		},
 		"fedex.permissao"
 	},
+	["Desempregado"] = {
+		_config = {
+			title = "Desempregado",
+			gtype = "job"
+		},
+		"desempregado.permissao"
+	}
+}
+
+local users = {
+	[1] = { "Admin" }
 }
 
 function vRP.getGroupTitle(group) -- ok
@@ -342,10 +353,17 @@ end
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- PLAYERSPAWN
 -----------------------------------------------------------------------------------------------------------------------------------------
-AddEventHandler("vRP:playerSpawn", function(user_id, source)
-	if user_id == 1 then
-		if not vRP.hasPermission(user_id, "Admin") then
-			vRP.addUserGroup(user_id, "Admin")
+AddEventHandler("vRP:playerSpawn", function(user_id, source, first_spawn)
+	if first_spawn then
+		local user = users[user_id]
+		if user then
+			for k, v in pairs(user) do
+				vRP.addUserGroup(user_id, v)
+			end
+		end
+
+		if vRP.getUserGroupByType(user_id, "job") == "" then
+			vRP.addUserGroup(user_id, "Desempregado")
 		end
 	end
 end)

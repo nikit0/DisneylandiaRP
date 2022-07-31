@@ -14,69 +14,25 @@ vRP.user_tables = {}
 vRP.user_tmp_tables = {}
 vRP.user_sources = {}
 
-local db_drivers = {}
-local db_driver
-local cached_prepares = {}
-local cached_queries = {}
 local prepared_queries = {}
-local db_initialized = false
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- BASE.LUA
 -----------------------------------------------------------------------------------------------------------------------------------------
-function vRP.registerDBDriver(name,on_init,on_prepare,on_query)
-	if not db_drivers[name] then
-		db_drivers[name] = { on_init,on_prepare,on_query }
-
-		if name == "ghmattimysql" then
-			db_driver = db_drivers[name]
-
-			local ok = on_init("disneylandiarp")
-			if ok then
-				db_initialized = true
-				for _,prepare in pairs(cached_prepares) do
-					on_prepare(table.unpack(prepare,1,table.maxn(prepare)))
-				end
-
-				for _,query in pairs(cached_queries) do
-					query[2](on_query(table.unpack(query[1],1,table.maxn(query[1]))))
-				end
-
-				cached_prepares = nil
-				cached_queries = nil
-			end
-		end
-	end
-end
-
 function vRP.format(n)
 	local left,num,right = string.match(n,'^([^%d]*%d)(%d*)(.-)$')
 	return left..(num:reverse():gsub('(%d%d%d)','%1.'):reverse())..right
 end
 
-function vRP.prepare(name,query)
-	prepared_queries[name] = true
-
-	if db_initialized then
-		db_driver[2](name,query)
-	else
-		table.insert(cached_prepares,{ name,query })
-	end
+function vRP.prepare(name, query)
+	prepared_queries[name] = query
 end
 
-function vRP.query(name,params,mode)
-	if not mode then mode = "query" end
-
-	if db_initialized then
-		return db_driver[3](name,params or {},mode)
-	else
-		local r = async()
-		table.insert(cached_queries,{{ name,params or {},mode },r })
-		return r:wait()
-	end
+function vRP.query(name, params)
+	return exports["oxmysql"]:query_async(prepared_queries[name], params)
 end
 
-function vRP.execute(name,params)
-	return vRP.query(name,params,"execute")
+function vRP.execute(name, params)
+	return exports["oxmysql"]:query_async(prepared_queries[name], params)
 end
 
 function vRP.getUserIdByIdentifiers(ids)
@@ -91,8 +47,8 @@ function vRP.getUserIdByIdentifiers(ids)
 		end
 
 		local rows, affected = vRP.query("vRP/create_user", {})
-		if #rows > 0 then
-			local user_id = rows[1].id
+		if rows then
+			local user_id = rows.insertId
 			local license
 			for k, v in pairs(ids) do
 				if string.find(v, "license:") then
@@ -255,9 +211,6 @@ AddEventHandler("queue:playerConnecting",function(source,ids,name,setKickReason,
 			deferrals.update("Carregando banimentos.")
 			if not vRP.isBanned(user_id) then
 				deferrals.update("Carregando whitelist.")
-				if user_id == 1 and not vRP.isWhitelisted(user_id) then
-					vRP.setWhitelisted(1, true)
-				end
 				if vRP.isWhitelisted(user_id) then
 					if vRP.rusers[user_id] == nil then
 						deferrals.update("Carregando banco de dados.")

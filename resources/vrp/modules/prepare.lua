@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- BASE
 -----------------------------------------------------------------------------------------------------------------------------------------
-vRP.prepare("vRP/create_user", "INSERT INTO vrp_users(whitelisted,banned) VALUES(false,false); SELECT LAST_INSERT_ID() AS id")
+vRP.prepare("vRP/create_user", "INSERT INTO vrp_users(whitelisted,banned) VALUES(false,false)")
 vRP.prepare("vRP/set_license", "UPDATE vrp_users SET license = @license WHERE id = @user_id")
 vRP.prepare("vRP/get_license", "SELECT license FROM vrp_users WHERE id = @id")
 vRP.prepare("vRP/add_identifier", "INSERT INTO vrp_user_ids(identifier,user_id) VALUES(@identifier,@user_id)")
